@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Blocknote</string>
+    //TextTab
+    <string name="note">Примечание</string>
+    <string name="reminding">Напоминания</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="all_note">Все заметки</string>
+    <string name="settirng">Настройки</string>
+    <string name="trash">Карзина</string>
+    //add info screen
+    <string name="label">Название</string>
+    <string name="text">Текст</string>
+    // read screen
+    <string name="no_label">No Label</string>
+    <string name="no_message">No message</string>
+</resources>
