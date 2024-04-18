@@ -4,16 +4,17 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id ("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 
 
 }
 
 android {
-    namespace = "com.i.blocknote"
+    namespace = "com.hutapp.org.notes.hut.android"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.i.blocknote"
+        applicationId = "com.hutapp.org.notes.hut.android"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -35,6 +36,8 @@ android {
         }
     }
     compileOptions {
+        //localData.now()
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -60,8 +63,20 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
+
+    //localData.now()
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:core:1.0.2")
+    // CALENDAR
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2")
+    // CLOCK
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:clock:1.0.2")
+
     // runtime-livedata
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    // firebase
+    implementation("com.google.firebase:firebase-analytics:21.5.0")
+
 
     //lifecycle-viewmodel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")

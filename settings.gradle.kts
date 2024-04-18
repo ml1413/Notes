@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Blocknote"
+rootProject.name = "Notes Hut Android"
 include(":app")
  

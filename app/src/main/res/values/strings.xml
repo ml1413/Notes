@@ -1,16 +1,37 @@
 <resources>
-    <string name="app_name">Blocknote</string>
+    <string name="app_name">Notes Hut Android</string>
+    //Error
+    <string name="no_text">Текст Отсутствует</string>
     //TextTab
     <string name="note">Примечание</string>
     <string name="reminding">Напоминания</string>
     <string name="bookmarks">Закладки</string>
     <string name="all_note">Все заметки</string>
     <string name="settirng">Настройки</string>
-    <string name="trash">Карзина</string>
+    <string name="trash">Корзина</string>
     //add info screen
     <string name="label">Название</string>
     <string name="text">Текст</string>
     // read screen
     <string name="no_label">No Label</string>
     <string name="no_message">No message</string>
+    //alert dialod
+    <string name="delete">Delete ?</string>
+    <string name="restore">Restore ?</string>
+    //CalendarScreen
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="sun">Sun</string>
+    //Screens title
+    <string name="initial">Initial</string>
+    <string name="all_notes">All notes</string>
+    <string name="setting">Setting</string>
+    <string name="trashh">Trash</string>
+    <string name="add_notes">Add notes</string>
+    <string name="calendar">Calendar</string>
+    <string name="read_notes">Read notes</string>
 </resources>
