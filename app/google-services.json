@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "971316400360",
+    "project_id": "notes-hut",
+    "storage_bucket": "notes-hut.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971316400360:android:6109ad2870991c82b4795d",
+        "android_client_info": {
+          "package_name": "com.hutapp.org.notes.hut.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5EyihRuqBM3n9vGUq26qLBDfERYMPEyE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
