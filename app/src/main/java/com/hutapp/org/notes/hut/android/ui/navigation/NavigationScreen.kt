@@ -113,6 +113,8 @@ fun NavigationScreen(
                             TrashScreen(
                                 paddingValues = paddingValues,
                                 tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
+                                currentScreenViewModel = currentScreenViewModel,
+                                tabItemList = tabItemList,
                                 noteViewModel = noteViewModel,
                                 isShowDeleteInTrashItem = true,
                                 onFABclickListener = {},
