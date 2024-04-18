@@ -9,12 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerScope
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -24,8 +27,10 @@ fun MyTabRowScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     coroutineScope: CoroutineScope,
+    currentPage:(Int)->Unit,
     tabItemList: TabItemList,
-    pageContent: @Composable PagerScope.(page: Int) -> Unit
+    pageContent: @Composable PagerScope.(page: Int) -> Unit,
+    onFABClickListener: () -> Unit
 ) {
     val pagerState = rememberPagerState { tabItemList.listItem.size }
     Column(
@@ -58,6 +63,11 @@ fun MyTabRowScreen(
             state = pagerState
         ) { index ->
             pageContent(index)
+            currentPage(pagerState.currentPage)
         }
     }
+    MyFAB(
+        iconForFAB = Icons.Default.Add,
+        onFABClisk = onFABClickListener
+    )
 }

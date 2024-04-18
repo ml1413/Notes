@@ -81,17 +81,16 @@ fun NavigationScreen(
                                 paddingValues = paddingValues,
                                 coroutineScope = coroutineScope,
                                 tabItemList = tabItemList,
+                                currentPage = { currentPage ->
+                                    tabRowCurrentItemViewModel.setItem(tabItemList.listItem[currentPage])
+                                },
                                 pageContent = { index ->
                                     NoteLazyScreen(
                                         index = index,
                                         tabItemList = tabItemList,
-                                        tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
                                         currentScreenViewModel = currentScreenViewModel,
                                         noteViewModel = noteViewModel,
                                         isShowDeleteInTrashItem = false,
-                                        onFABclickListener = {
-                                            navHostController.navigate(Screens.AddScreen.route)
-                                        },
                                         onItemClickListener = { noteEntity ->
                                             navHostController.navigate(
                                                 Screens.ReadNoteScreen.getRouteWithArgs(
@@ -100,6 +99,9 @@ fun NavigationScreen(
                                             )
                                         })
 
+                                },
+                                onFABClickListener = {
+                                    navHostController.navigate(Screens.AddScreen.route)
                                 }
                             )
                         },

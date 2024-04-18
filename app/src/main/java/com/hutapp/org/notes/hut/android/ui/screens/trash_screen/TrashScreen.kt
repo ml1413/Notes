@@ -61,7 +61,6 @@ fun TrashScreen(
         noteViewModel = noteViewModel,
         isShowDeleteInTrashItem = isShowDeleteInTrashItem,
         currentScreenViewModel = currentScreenViewModel,
-        tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
         tabItemList = tabItemList,
         index = 0,
         onItemClickListener = {},
@@ -69,9 +68,7 @@ fun TrashScreen(
             itemForDeleteViewModel.setValue(noteEntity = noteEntity)
             alertIsVisible.value = true
         }
-    ) {
-
-    }
+    )
 
 //    Box(
 //        modifier = modifier

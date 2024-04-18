@@ -30,12 +30,10 @@ fun MyLazyForItemNotes(
     noteViewModel: NoteViewModel,
     isShowDeleteInTrashItem: Boolean,
     currentScreenViewModel: CurrentScreenViewModel,
-    tabRowCurrentItemViewModel: TabRowCurrentItemViewModel,
     tabItemList: TabItemList,
     index: Int = 0,
     onItemIconClickListener:(NoteEntity)->Unit = {},
     onItemClickListener: (NoteEntity) -> Unit,
-    onFABclickListener: () -> Unit = {}
 ) {
     val listEntity = noteViewModel.noteList.observeAsState()
     val labelScreen = tabItemList.listItem[index]
@@ -49,16 +47,7 @@ fun MyLazyForItemNotes(
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
         ) {
-            //labelScreen___________________________________________________________________________
-//            item {
-//                Text(
-//                    modifier = modifier
-//                        .padding(16.dp),
-//                    fontWeight = FontWeight.Bold,
-//                    text = labelScreen.title
-//                )
-//            }
-            //______________________________________________________________________________________
+
             listEntity.value?.let { listEntity ->
                 val filterList = listEntity.filter {
                     it.labelNoteScreen == labelScreen.title && it.isDelete == isShowDeleteInTrashItem
@@ -73,29 +62,6 @@ fun MyLazyForItemNotes(
                 }
             }
         }
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomEnd
-        ) {
-            val screens = currentScreenViewModel.screen.value
-            screens?.let {
-                if (it != Screens.TrashScreen)
-                    FloatingActionButton(
-                        modifier = modifier.padding(16.dp),
-                        onClick = {
-                            tabRowCurrentItemViewModel.setItem(modelTabRowItem = tabItemList.listItem[index])
-                            onFABclickListener()
-                        },
-                        content = {
-                            Icon(
-                                imageVector = when (it) {
-                                    Screens.TrashScreen -> Icons.Default.Delete
-                                    else -> Icons.Default.Add
-                                },
-                                contentDescription = null
-                            )
-                        })
-            }
-        }
+
     }
 }

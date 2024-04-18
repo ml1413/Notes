@@ -18,11 +18,9 @@ fun NoteLazyScreen(
     modifier: Modifier = Modifier,
     index: Int,
     tabItemList: TabItemList,
-    tabRowCurrentItemViewModel: TabRowCurrentItemViewModel,
     currentScreenViewModel: CurrentScreenViewModel,
     isShowDeleteInTrashItem: Boolean,
     noteViewModel: NoteViewModel,
-    onFABclickListener: () -> Unit,
     onItemClickListener: (NoteEntity) -> Unit
 ) {
 
@@ -31,10 +29,8 @@ fun NoteLazyScreen(
         isShowDeleteInTrashItem = isShowDeleteInTrashItem,
         onItemClickListener = onItemClickListener,
         currentScreenViewModel = currentScreenViewModel,
-        tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
         tabItemList = tabItemList,
         index = index,
-        onFABclickListener = onFABclickListener
     )
 }
 
