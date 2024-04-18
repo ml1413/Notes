@@ -8,21 +8,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hutapp.org.notes.hut.android.R
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
-import com.hutapp.org.notes.hut.android.ui.theme.NotesHutAndroidTheme
+import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
 
 @Composable
 fun ReadNoteScreen(
@@ -63,29 +59,17 @@ fun ReadNoteScreen(
                 ).message
             )
         }
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            contentAlignment = Alignment.BottomEnd
-        ) {
-            FloatingActionButton(onClick = {
-                val noteEntity = getNoteEntityFromId(
-                    context = context,
-                    noteEntityId = noteEntityId,
-                    noteViewModel = noteViewModel
-                )
+        MyFAB(iconForFAB = Icons.Default.Delete, onFABClisk = {
+            val noteEntity = getNoteEntityFromId(
+                context = context,
+                noteEntityId = noteEntityId,
+                noteViewModel = noteViewModel
+            )
 
-                val newNoteEntity = noteEntity.copy(isDelete = true)
-                noteViewModel.updateNote(noteEntity = newNoteEntity)
-                onFABClickListener()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = null
-                )
-            }
-        }
+            val newNoteEntity = noteEntity.copy(isDelete = true)
+            noteViewModel.updateNote(noteEntity = newNoteEntity)
+            onFABClickListener()
+        })
     }
 }
 

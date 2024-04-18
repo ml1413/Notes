@@ -11,6 +11,7 @@ import androidx.compose.foundation.pager.PagerScope
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -27,7 +28,7 @@ fun MyTabRowScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     coroutineScope: CoroutineScope,
-    currentPage:(Int)->Unit,
+    currentPage: (Int) -> Unit,
     tabItemList: TabItemList,
     pageContent: @Composable PagerScope.(page: Int) -> Unit,
     onFABClickListener: () -> Unit
@@ -39,6 +40,7 @@ fun MyTabRowScreen(
             .padding(paddingValues)
     ) {
         ScrollableTabRow(
+            divider = {},
             selectedTabIndex = pagerState.currentPage,
             edgePadding = 0.dp
         ) {
@@ -56,6 +58,7 @@ fun MyTabRowScreen(
                     })
             }
         }
+        Divider()
         HorizontalPager(
             modifier = modifier
                 .fillMaxWidth()
@@ -71,3 +74,4 @@ fun MyTabRowScreen(
         onFABClisk = onFABClickListener
     )
 }
+

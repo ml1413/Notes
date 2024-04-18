@@ -1,5 +1,6 @@
 package com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
