@@ -68,10 +68,12 @@ fun CustomGrid(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Text(text = localDate.dayOfMonth.toString())
-                                    val list = noteViewModel.noteList.value?.map { it.localDate }
+                                    val list =
+                                        noteViewModel.noteList.value?.map { it.localDate }
                                     list?.let {
                                         if (it.contains(localDate.toString()))
                                             Divider(
+                                                modifier = modifier.padding(4.dp),
                                                 thickness = 2.dp,
                                                 color = MaterialTheme.colorScheme.primary
                                             )
@@ -90,3 +92,4 @@ fun CustomGrid(
 
     }
 }
+

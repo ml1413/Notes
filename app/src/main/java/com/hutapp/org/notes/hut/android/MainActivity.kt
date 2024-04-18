@@ -16,7 +16,7 @@ import com.google.firebase.ktx.Firebase
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.DrawerItemStateViewModel
 import com.hutapp.org.notes.hut.android.ui.navigation.NavigationScreen
-import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.TitleForTopBarViewModel
+import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabItemList
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 import com.hutapp.org.notes.hut.android.ui.theme.NotesHutAndroidTheme
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(modifier: Modifier = Modifier) {
     val drawerItemStateViewModel: DrawerItemStateViewModel = viewModel()
     val tabRowCurrentItemViewModel: TabRowCurrentItemViewModel = viewModel()
-    val titleForTopBarViewModel: TitleForTopBarViewModel = viewModel()
+    val currentScreenViewModel: CurrentScreenViewModel = viewModel()
     val noteViewModel: NoteViewModel = viewModel()
     val context = LocalContext.current
     val tabItemList: TabItemList = TabItemList(context = context)
@@ -54,7 +54,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         tabItemList = tabItemList,
         tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
         drawerItemStateViewModel = drawerItemStateViewModel,
-        titleForTopBarViewModel = titleForTopBarViewModel
+        currentScreenViewModel = currentScreenViewModel
     )
 
 }

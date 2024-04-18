@@ -1,6 +1,5 @@
 package com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar
 
-import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
@@ -23,13 +22,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 fun MyTopBar(
     modifier: Modifier = Modifier,
-    titleForTopBarViewModel: TitleForTopBarViewModel,
+    currentScreenViewModel: CurrentScreenViewModel,
     coroutineScope: CoroutineScope,
     onBackButtonClickListener: () -> Unit,
     onCalendarClickListener: () -> Unit,
     drawerState: DrawerState
 ) {
-    val titleScreen = titleForTopBarViewModel.screen.observeAsState(Screens.Initial)
+    val titleScreen = currentScreenViewModel.screen.observeAsState(Screens.Initial)
     TopAppBar(
         title = {
             //todo need refactor

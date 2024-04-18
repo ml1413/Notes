@@ -72,54 +72,6 @@ fun MyCalendar(
             noteViewModel = noteViewModel,
             onItemClickListener = onItemClickListener
         )
-//        LazyVerticalGrid(
-//            modifier = modifier.padding(horizontal = 16.dp),
-//            userScrollEnabled = false,
-//            columns = GridCells.Fixed(7)
-//        ) {
-//            items(
-//                listDay
-//            ) {
-//                Box(
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Text(
-//                        text = it
-//                    )
-//                }
-//
-//            }
-//            items(daysInMonthList) { localDate ->
-//                Box(
-//                    modifier = modifier
-//                        .padding(4.dp)
-//                        .clickable {
-//                            localDate?.let { (onItemClickListener(it)) }
-//                        },
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    localDate?.let {
-//                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-//                            Text(
-//                                modifier = modifier
-//                                    .padding(vertical = 16.dp),
-//                                text = it.dayOfMonth.toString()
-//                            )
-//                            val list = noteViewModel.noteList.value?.map { it.localDate }
-//                            list?.let {
-//                                if (it.contains(localDate.toString()))
-//                                    Divider(
-//                                        thickness = 2.dp,
-//                                        color = MaterialTheme.colorScheme.primary
-//                                    )
-//                            }
-//                        }
-//
-//                    }
-//
-//                }
-//            }
-//        }
     }
 }
 

@@ -19,8 +19,8 @@ import com.hutapp.org.notes.hut.android.ui.screens.SettingsScreen
 import com.hutapp.org.notes.hut.android.ui.screens.calendar_screen.CalendarScreen
 import com.hutapp.org.notes.hut.android.ui.screens.trash_screen.TrashScreen
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTabRowScreen
+import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.MyTopBar
-import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.TitleForTopBarViewModel
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabItemList
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 
@@ -32,7 +32,7 @@ fun NavigationScreen(
     tabItemList: TabItemList,
     tabRowCurrentItemViewModel: TabRowCurrentItemViewModel,
     drawerItemStateViewModel: DrawerItemStateViewModel,
-    titleForTopBarViewModel: TitleForTopBarViewModel,
+    currentScreenViewModel: CurrentScreenViewModel,
 ) {
     val navHostController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
@@ -46,7 +46,7 @@ fun NavigationScreen(
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
                 onItemDrawMenuListener = { screen ->
-                    titleForTopBarViewModel.setTitleScreen(screen = screen)
+                    currentScreenViewModel.setTitleScreen(screen = screen)
                     navHostController.navigate(screen.route) {
                         popUpTo(Screens.AllNotesScreen.route)
                         launchSingleTop = true
@@ -59,13 +59,13 @@ fun NavigationScreen(
                     MyTopBar(
                         coroutineScope = coroutineScope,
                         drawerState = drawerState,
-                        titleForTopBarViewModel = titleForTopBarViewModel,
+                        currentScreenViewModel = currentScreenViewModel,
                         onBackButtonClickListener = {
-                            titleForTopBarViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
+                            currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
                             navHostController.popBackStack()
                         }, onCalendarClickListener = {
-                            titleForTopBarViewModel.setTitleScreen(screen = Screens.CalendarScreen)
-                            navHostController.navigate(Screens.CalendarScreen.route){
+                            currentScreenViewModel.setTitleScreen(screen = Screens.CalendarScreen)
+                            navHostController.navigate(Screens.CalendarScreen.route) {
                                 popUpTo(Screens.AllNotesScreen.route)
                                 launchSingleTop = true
                             }
@@ -76,7 +76,7 @@ fun NavigationScreen(
                     AppNavGraph(
                         navHostController = navHostController,
                         allNotesScreensContent = {
-                            titleForTopBarViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
+                            currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
                             MyTabRowScreen(
                                 paddingValues = paddingValues,
                                 coroutineScope = coroutineScope,
@@ -86,6 +86,7 @@ fun NavigationScreen(
                                         index = index,
                                         tabItemList = tabItemList,
                                         tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
+                                        currentScreenViewModel = currentScreenViewModel,
                                         noteViewModel = noteViewModel,
                                         isShowDeleteInTrashItem = false,
                                         onFABclickListener = {
@@ -117,7 +118,7 @@ fun NavigationScreen(
                                 onFABclickListener = {},
                                 onItemClickListener = {},
                                 onBackHandler = {
-                                    titleForTopBarViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
+                                    currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
                                     navHostController.popBackStack()
                                 }
                             )
@@ -146,8 +147,9 @@ fun NavigationScreen(
                             CalendarScreen(
                                 paddingValues = paddingValues,
                                 noteViewModel = noteViewModel,
+                                currentScreenViewModel = currentScreenViewModel,
                                 onBackListener = {
-                                    titleForTopBarViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
+                                    currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
                                     navHostController.popBackStack()
                                 }
                             )
