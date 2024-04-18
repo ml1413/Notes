@@ -30,7 +30,6 @@ class MainActivity : ComponentActivity() {
         analytics = Firebase.analytics
         setContent {
             NotesHutAndroidTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

@@ -15,10 +15,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -51,6 +54,10 @@ fun AddInfoScreen(
     val isError = remember {
         mutableStateOf(false)
     }
+    val focusRequester = remember {
+        FocusRequester()
+    }
+    SideEffect { focusRequester.requestFocus() }
     //resizeWindow__________________________________________________________________________________
     val activity: Activity = LocalContext.current as Activity
     //______________________________________________________________________________________________
@@ -63,6 +70,7 @@ fun AddInfoScreen(
         Column(modifier = modifier.fillMaxSize()) {
             TextField(
                 modifier = modifier
+                    .focusRequester(focusRequester = focusRequester)
                     .onFocusChanged {
                         //resizeWindow__________________________________________________________________
                         activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
