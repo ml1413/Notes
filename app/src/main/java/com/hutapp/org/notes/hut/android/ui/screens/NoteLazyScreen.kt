@@ -1,6 +1,7 @@
 package com.hutapp.org.notes.hut.android.ui.screens
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,12 +10,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
@@ -43,17 +42,18 @@ fun NoteLazyScreen(
     ) {
         LazyColumn(
             modifier = modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
         ) {
             //labelScreen___________________________________________________________________________
-            item {
-                Text(
-                    modifier = modifier
-                        .padding(16.dp),
-                    fontWeight = FontWeight.Bold,
-                    text = labelScreen.title
-                )
-            }
+//            item {
+//                Text(
+//                    modifier = modifier
+//                        .padding(16.dp),
+//                    fontWeight = FontWeight.Bold,
+//                    text = labelScreen.title
+//                )
+//            }
             //______________________________________________________________________________________
             listEntity.value?.let { listEntity ->
                 val filterList = listEntity.filter {
