@@ -1,6 +1,7 @@
 package com.hutapp.org.notes.hut.android.ui.screens
 
 import android.app.Activity
+import android.util.Log
 import android.view.WindowManager
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,9 +16,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -45,10 +47,10 @@ fun AddInfoScreen(
     val currentLabelScreen =
         tabRowCurrentItemViewModel.currentItem.value?.title
             ?: stringResource(id = R.string.no_text)
-    val textLabel = remember {
+    val textLabel = rememberSaveable {
         mutableStateOf("")
     }
-    val textMessage = remember {
+    val textMessage = rememberSaveable {
         mutableStateOf("")
     }
     val isError = remember {
@@ -57,7 +59,10 @@ fun AddInfoScreen(
     val focusRequester = remember {
         FocusRequester()
     }
-    SideEffect { focusRequester.requestFocus() }
+    LaunchedEffect(key1 = null) {
+        Log.d("TAG1", "AddInfoScreen: ")
+        focusRequester.requestFocus()
+    }
     //resizeWindow__________________________________________________________________________________
     val activity: Activity = LocalContext.current as Activity
     //______________________________________________________________________________________________

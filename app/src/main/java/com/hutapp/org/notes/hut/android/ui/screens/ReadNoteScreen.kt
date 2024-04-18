@@ -76,15 +76,6 @@ fun ReadNoteScreen(
                     noteViewModel = noteViewModel
                 )
 
-                // delete from db
-//                noteViewModel.deleteNoteFromDB(
-//                    noteEntity = getNoteEntityFromId(
-//                        context = context,
-//                        noteEntityId = noteEntityId,
-//                        noteViewModel = noteViewModel
-//                    )
-//                )
-
                 val newNoteEntity = noteEntity.copy(isDelete = true)
                 noteViewModel.updateNote(noteEntity = newNoteEntity)
                 onFABClickListener()
@@ -114,14 +105,3 @@ private fun getNoteEntityFromId(
     )
 }
 
-@Composable
-@Preview(showSystemUi = true, showBackground = true)
-fun Preview() {
-    NotesHutAndroidTheme {
-        ReadNoteScreen(
-            paddingValues = PaddingValues(),
-            noteViewModel = viewModel(),
-            noteEntityId = 0,
-        )
-    }
-}
