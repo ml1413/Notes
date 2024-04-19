@@ -21,6 +21,7 @@ fun CalendarScreen(
     noteViewModel: NoteViewModel,
     currentScreenViewModel: CurrentScreenViewModel,
     paddingValues: PaddingValues = PaddingValues(),
+    onItemClickListener: (NoteEntity) -> Unit,
     onBackListener: () -> Unit = {}
 ) {
     val listNotes = rememberSaveable {
@@ -46,34 +47,8 @@ fun CalendarScreen(
             MyItemBox(
                 currentScreenViewModel = currentScreenViewModel,
                 noteEntity = noteEntity,
+                onItemClickListener = onItemClickListener
             )
-//            Box(
-//                modifier = modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 16.dp, vertical = 2.dp)
-//                    .clickable { }
-//                    .border(
-//                        width = 1.dp,
-//                        shape = RoundedCornerShape(8.dp),
-//                        color = MaterialTheme.colorScheme.onBackground
-//                    )
-//            ) {
-//                Column(
-//                    modifier = modifier
-//                        .fillMaxWidth()
-//                        .padding(horizontal = 16.dp, vertical = 4.dp)
-//                ) {
-//                    Text(
-//                        text = noteEntity.labelNote,
-//                        maxLines = 1,
-//                        fontWeight = FontWeight.Bold
-//                    )
-//                    Text(
-//                        maxLines = 1,
-//                        text = noteEntity.message
-//                    )
-//                }
-//            }
         }
     }
 }

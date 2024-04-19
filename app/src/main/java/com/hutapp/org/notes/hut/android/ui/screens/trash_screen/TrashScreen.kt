@@ -21,23 +21,16 @@ import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 fun TrashScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
-    tabRowCurrentItemViewModel: TabRowCurrentItemViewModel,
     currentScreenViewModel: CurrentScreenViewModel,
     tabItemList: TabItemList,
     noteViewModel: NoteViewModel,
     itemForDeleteViewModel: ItemForDeleteViewModel = viewModel(),
     isShowDeleteInTrashItem: Boolean,
     onItemClickListener: (NoteEntity) -> Unit,
-    onFABclickListener: () -> Unit,
     onBackHandler: () -> Unit
 
 ) {
-    Log.d("TAG1", "TrashScreen: ")
-    BackHandler {
-        onBackHandler()
-    }
-
-    val listEntity = noteViewModel.noteList.observeAsState()
+    BackHandler { onBackHandler() }
     val alertIsVisible = rememberSaveable { mutableStateOf(false) }
 
     if (alertIsVisible.value) {
@@ -63,75 +56,10 @@ fun TrashScreen(
         currentScreenViewModel = currentScreenViewModel,
         tabItemList = tabItemList,
         index = 0,
-        onItemClickListener = {},
+        onItemClickListener = onItemClickListener,
         onItemIconClickListener = { noteEntity ->
             itemForDeleteViewModel.setValue(noteEntity = noteEntity)
             alertIsVisible.value = true
         }
     )
-
-//    Box(
-//        modifier = modifier
-//            .fillMaxSize()
-//            .padding(paddingValues),
-//    ) {
-//        LazyColumn(
-//            modifier = modifier.fillMaxSize(),
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            listEntity.value?.let { listEntity ->
-//                val filterList = listEntity.filter {
-//                    it.isDelete == isShowDeleteInTrashItem
-//                }
-//                items(filterList) { noteEntity ->
-//                    Box(
-//                        modifier = modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = 16.dp, vertical = 2.dp)
-//                            .clickable { onItemClickListener(noteEntity) }
-//                            .border(
-//                                width = 1.dp,
-//                                shape = RoundedCornerShape(8.dp),
-//                                color = MaterialTheme.colorScheme.onBackground
-//                            )
-//                    ) {
-//                        Row {
-//                            Column(
-//                                modifier = modifier
-//                                    .weight(1f)
-//                                    .padding(horizontal = 16.dp, vertical = 4.dp)
-//                            ) {
-//                                Text(
-//                                    text = noteEntity.labelNote,
-//                                    maxLines = 1,
-//                                    fontWeight = FontWeight.Bold
-//                                )
-//                                Text(
-//                                    maxLines = 1,
-//                                    text = noteEntity.message
-//                                )
-//                            }
-//                            IconButton(onClick = {
-//                                itemForDeleteViewModel.setValue(noteEntity = noteEntity)
-//                                alertIsVisible.value = true
-//                            }) {
-//                                Icon(imageVector = Icons.Default.Delete, contentDescription = null)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    Box(
-//        modifier = modifier.fillMaxSize(),
-//        contentAlignment = Alignment.BottomEnd
-//    ) {
-//        FloatingActionButton(
-//            modifier = modifier.padding(16.dp),
-//            onClick = { onFABclickListener() },
-//            content = {
-//                Icon(imageVector = Icons.Default.Add, contentDescription = null)
-//            })
-//    }
 }

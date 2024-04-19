@@ -1,6 +1,5 @@
 package com.hutapp.org.notes.hut.android.ui.navigation
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
@@ -115,12 +114,10 @@ fun NavigationScreen(
                         trashScreenContent = {
                             TrashScreen(
                                 paddingValues = paddingValues,
-                                tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
                                 currentScreenViewModel = currentScreenViewModel,
                                 tabItemList = tabItemList,
                                 noteViewModel = noteViewModel,
                                 isShowDeleteInTrashItem = true,
-                                onFABclickListener = {},
                                 onItemClickListener = {},
                                 onBackHandler = {
                                     currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
@@ -153,6 +150,13 @@ fun NavigationScreen(
                                 paddingValues = paddingValues,
                                 noteViewModel = noteViewModel,
                                 currentScreenViewModel = currentScreenViewModel,
+                                onItemClickListener = { noteEntity ->
+                                    navHostController.navigate(
+                                        Screens.ReadNoteScreen.getRouteWithArgs(
+                                            noteEntity = noteEntity
+                                        )
+                                    )
+                                },
                                 onBackListener = {
                                     currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
                                     navHostController.popBackStack()
