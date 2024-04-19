@@ -76,8 +76,8 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
     // firebase
     implementation("com.google.firebase:firebase-analytics:21.5.0")
-
-
+    // googleSplashScreen
+    implementation("androidx.core:core-splashscreen:1.0.1")
     //lifecycle-viewmodel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     // navigation-compose
