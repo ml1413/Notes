@@ -35,7 +35,6 @@ fun MyTabRowScreen(
     onFABClickListener: () -> Unit
 ) {
     val pagerState = rememberPagerState { tabItemList.listItem.size }
-    LaunchedEffect(key1 = pagerState.currentPage) { onCurrentPageListener(pagerState.currentPage) }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -68,6 +67,7 @@ fun MyTabRowScreen(
             state = pagerState
         ) { index ->
             pageContent(index)
+            onCurrentPageListener(pagerState.currentPage)
         }
     }
     MyFAB(

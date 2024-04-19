@@ -85,6 +85,7 @@ fun NavigationScreen(
                                     tabRowCurrentItemViewModel.setItem(tabItemList.listItem[currentPage])
                                 },
                                 pageContent = { index ->
+
                                     NoteLazyScreen(
                                         index = index,
                                         tabItemList = tabItemList,

@@ -56,7 +56,6 @@ fun AddInfoScreen(
         FocusRequester()
     }
     LaunchedEffect(key1 = null) {
-        Log.d("TAG1", "AddInfoScreen: ")
         focusRequester.requestFocus()
     }
     //resizeWindow__________________________________________________________________________________
