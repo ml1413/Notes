@@ -11,10 +11,12 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import java.time.LocalDate
 
@@ -22,6 +24,7 @@ import java.time.LocalDate
 fun CustomGrid(
     modifier: Modifier = Modifier,
     listDay: List<String> = emptyList(),
+    listEntity: State<List<NoteEntity>?>,
     daysInMonthList: List<LocalDate?> = emptyList(),
     noteViewModel: NoteViewModel,
     onItemClickListener: (LocalDate) -> Unit = {}
@@ -69,7 +72,7 @@ fun CustomGrid(
                                 ) {
                                     Text(text = localDate.dayOfMonth.toString())
                                     val list =
-                                        noteViewModel.noteList.value?.map { it.localDate }
+                                        listEntity.value?.map { it.localDate }
                                     list?.let {
                                         if (it.contains(localDate.toString()))
                                             Divider(

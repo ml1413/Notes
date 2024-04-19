@@ -12,12 +12,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.hutapp.org.notes.hut.android.R
+import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import java.time.LocalDate
 import java.time.YearMonth
@@ -26,6 +28,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun MyCalendar(
     modifier: Modifier = Modifier,
+    listEntity: State<List<NoteEntity>?>,
     noteViewModel: NoteViewModel,
     onItemClickListener: (LocalDate) -> Unit
 ) {
@@ -68,6 +71,7 @@ fun MyCalendar(
         //_______________
         CustomGrid(
             listDay = listDay,
+            listEntity=listEntity,
             daysInMonthList = daysInMonthList,
             noteViewModel = noteViewModel,
             onItemClickListener = onItemClickListener
