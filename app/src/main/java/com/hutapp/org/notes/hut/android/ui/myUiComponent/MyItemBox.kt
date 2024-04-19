@@ -23,10 +23,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.ui.navigation.Screens
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
+import java.time.LocalDate
 
 @Composable
 fun MyItemBox(
@@ -63,6 +66,13 @@ fun MyItemBox(
                     modifier = modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
+                    Box(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(start = 8.dp)
+                    ) {
+                        Text(text = noteEntity.localDate)
+                    }
                     Text(
                         modifier = modifier.padding(8.dp),
                         text = maxLengthString(string = noteEntity.labelNote, maxLength = 10),
@@ -96,6 +106,11 @@ fun MyItemBox(
                             modifier = modifier
                                 .padding(8.dp)
                                 .clip(shape = CircleShape)
+                                .border(
+                                    1.dp,
+                                    color = MaterialTheme.colorScheme.background,
+                                    shape = CircleShape
+                                )
                                 .background(MaterialTheme.colorScheme.primary),
                             onClick = { onIconButtonClickListener() }) {
                             Icon(
@@ -116,4 +131,23 @@ fun MyItemBox(
 private fun maxLengthString(string: String, maxLength: Int): String {
     return if (string.length > maxLength) string.substring(0, maxLength) + "..."
     else string
+}
+
+@Composable
+@Preview(showBackground = true, showSystemUi = true)
+private fun Preview(
+    modifier: Modifier = Modifier,
+    onItemClickListener: (NoteEntity) -> Unit = {},
+    onIconButtonClickListener: () -> Unit = {},
+    currentScreenViewModel: CurrentScreenViewModel = viewModel(),
+) {
+    val noteEntity = NoteEntity(
+        id = 1,
+        labelNote = "labelNote",
+        labelNoteScreen = "labelNoteScreen",
+        isDelete = true,
+        message = "basdfdsfdsf  sdfsdf fd s",
+        localDate = LocalDate.now().toString()
+    )
+    MyItemBox(currentScreenViewModel = currentScreenViewModel, noteEntity = noteEntity)
 }
