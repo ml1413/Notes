@@ -44,11 +44,12 @@ fun CalendarScreen(
             )
         }
         items(listNotes.value) { noteEntity ->
-            MyItemBox(
-                currentScreenViewModel = currentScreenViewModel,
-                noteEntity = noteEntity,
-                onItemClickListener = onItemClickListener
-            )
+            if (!noteEntity.isDelete)
+                MyItemBox(
+                    currentScreenViewModel = currentScreenViewModel,
+                    noteEntity = noteEntity,
+                    onItemClickListener = onItemClickListener
+                )
         }
     }
 }
