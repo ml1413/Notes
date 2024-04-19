@@ -1,5 +1,6 @@
 package com.hutapp.org.notes.hut.android.ui.navigation
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
@@ -81,8 +82,12 @@ fun NavigationScreen(
                                 paddingValues = paddingValues,
                                 coroutineScope = coroutineScope,
                                 tabItemList = tabItemList,
+                               onCurrentPageListener = {currentPage ->
+                                   tabRowCurrentItemViewModel.setItem(tabItemList.listItem[currentPage])
+
+                               },
                                 currentPage = { currentPage ->
-                                    tabRowCurrentItemViewModel.setItem(tabItemList.listItem[currentPage])
+
                                 },
                                 pageContent = { index ->
                                     NoteLazyScreen(

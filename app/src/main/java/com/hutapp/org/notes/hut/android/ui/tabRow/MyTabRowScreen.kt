@@ -16,6 +16,7 @@ import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
@@ -29,11 +30,17 @@ fun MyTabRowScreen(
     paddingValues: PaddingValues,
     coroutineScope: CoroutineScope,
     currentPage: (Int) -> Unit,
+    onCurrentPageListener: (Int) -> Unit,
     tabItemList: TabItemList,
     pageContent: @Composable PagerScope.(page: Int) -> Unit,
     onFABClickListener: () -> Unit
 ) {
     val pagerState = rememberPagerState { tabItemList.listItem.size }
+    LaunchedEffect(key1 = pagerState.currentPage) {
+        onCurrentPageListener(pagerState.currentPage)
+    }
+
+
     Column(
         modifier = modifier
             .fillMaxSize()
