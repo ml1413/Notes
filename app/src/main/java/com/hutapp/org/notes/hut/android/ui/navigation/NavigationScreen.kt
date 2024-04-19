@@ -82,12 +82,8 @@ fun NavigationScreen(
                                 paddingValues = paddingValues,
                                 coroutineScope = coroutineScope,
                                 tabItemList = tabItemList,
-                               onCurrentPageListener = {currentPage ->
-                                   tabRowCurrentItemViewModel.setItem(tabItemList.listItem[currentPage])
-
-                               },
-                                currentPage = { currentPage ->
-
+                                onCurrentPageListener = { currentPage ->
+                                    tabRowCurrentItemViewModel.setItem(tabItemList.listItem[currentPage])
                                 },
                                 pageContent = { index ->
                                     NoteLazyScreen(

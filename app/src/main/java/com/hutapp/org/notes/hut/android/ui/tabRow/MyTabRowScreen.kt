@@ -29,18 +29,13 @@ fun MyTabRowScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     coroutineScope: CoroutineScope,
-    currentPage: (Int) -> Unit,
     onCurrentPageListener: (Int) -> Unit,
     tabItemList: TabItemList,
     pageContent: @Composable PagerScope.(page: Int) -> Unit,
     onFABClickListener: () -> Unit
 ) {
     val pagerState = rememberPagerState { tabItemList.listItem.size }
-    LaunchedEffect(key1 = pagerState.currentPage) {
-        onCurrentPageListener(pagerState.currentPage)
-    }
-
-
+    LaunchedEffect(key1 = pagerState.currentPage) { onCurrentPageListener(pagerState.currentPage) }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -73,7 +68,6 @@ fun MyTabRowScreen(
             state = pagerState
         ) { index ->
             pageContent(index)
-            currentPage(pagerState.currentPage)
         }
     }
     MyFAB(

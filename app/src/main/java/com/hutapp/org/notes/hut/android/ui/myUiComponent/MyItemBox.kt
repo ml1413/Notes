@@ -1,12 +1,14 @@
 package com.hutapp.org.notes.hut.android.ui.myUiComponent
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Warning
@@ -34,6 +36,8 @@ fun MyItemBox(
     onItemClickListener: (NoteEntity) -> Unit = {},
     onIconButtonClickListener: () -> Unit = {}
 ) {
+    val color = MaterialTheme.colorScheme.primary
+    val shape = RoundedCornerShape(16.dp)
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -41,7 +45,8 @@ fun MyItemBox(
             .padding(bottom = 8.dp)
             .clickable { onItemClickListener(noteEntity) },
         elevation = CardDefaults.elevatedCardElevation(2.dp),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
+        colors = CardDefaults.cardColors(color),
+        shape = shape
     ) {
         Box(
             modifier =
@@ -52,6 +57,7 @@ fun MyItemBox(
             Column(
                 modifier = modifier
                     .fillMaxWidth()
+                    .border(1.dp, shape = shape, color = color)
             ) {
                 Box(
                     modifier = modifier.fillMaxWidth(),
@@ -74,6 +80,7 @@ fun MyItemBox(
                     Text(
                         modifier =
                         modifier.padding(8.dp),
+                        color = color,
                         maxLines = 1,
                         text = maxLengthString(string = noteEntity.message, maxLength = 15)
                     )
@@ -89,7 +96,7 @@ fun MyItemBox(
                             modifier = modifier
                                 .padding(8.dp)
                                 .clip(shape = CircleShape)
-                                .background(MaterialTheme.colorScheme.secondaryContainer),
+                                .background(MaterialTheme.colorScheme.primary),
                             onClick = { onIconButtonClickListener() }) {
                             Icon(
                                 imageVector = when (screen) {
