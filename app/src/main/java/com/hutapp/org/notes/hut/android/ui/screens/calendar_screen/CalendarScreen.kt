@@ -9,9 +9,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyItemBox
@@ -27,7 +28,8 @@ fun CalendarScreen(
     onBackListener: () -> Unit = {}
 ) {
     val listEntity = noteViewModel.noteList.observeAsState()
-    val choiceLocalDate = remember { mutableStateOf("") }
+    val choiceDate = rememberSaveable { mutableStateOf("") }
+
     Log.d("TAG1", "CalendarScreen: ")
 
     BackHandler { onBackListener() }
@@ -40,16 +42,16 @@ fun CalendarScreen(
                 listEntity = listEntity,
                 noteViewModel = noteViewModel,
                 onItemClickListener = { localDate ->
-                    choiceLocalDate.value = localDate.toString()
+                    choiceDate.value = localDate.toString()
                 }
             )
         }
-        noteViewModel.noteList.value?.let { listNoteEntity ->
+        listEntity.value?.let { listNoteEntity ->
             val listNotes = listNoteEntity.filter {
-                it.localDate == choiceLocalDate.value && !it.isDelete
+                it.localDate == choiceDate.value && !it.isDelete
             }
-            Log.d("TAG1", "filter: ")
             items(listNotes) { noteEntity ->
+                Log.d("TAG1", "items: ${listNotes.size}")
                 MyItemBox(
                     currentScreenViewModel = currentScreenViewModel,
                     noteEntity = noteEntity,
