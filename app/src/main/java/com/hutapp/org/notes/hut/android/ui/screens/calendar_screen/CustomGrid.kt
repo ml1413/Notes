@@ -72,7 +72,8 @@ fun CustomGrid(
                                 ) {
                                     Text(text = localDate.dayOfMonth.toString())
                                     val list =
-                                        listEntity.value?.map { it.localDate }
+                                        listEntity.value?.filter { !it.isDelete }
+                                            ?.map { it.localDate.toString() }
                                     list?.let {
                                         if (it.contains(localDate.toString()))
                                             Divider(
