@@ -2,33 +2,57 @@ package com.hutapp.org.notes.hut.android.ui.screens
 
 import android.app.Activity
 import android.view.WindowManager
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.hutapp.org.notes.hut.android.R
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
-import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
-import com.hutapp.org.notes.hut.android.notification.ModelAlarmItem
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 import java.time.LocalDate
@@ -58,6 +82,9 @@ fun AddInfoScreen(
     }
     LaunchedEffect(key1 = null) {
         focusRequester.requestFocus()
+    }
+    val isShowAlert = remember {
+        mutableStateOf(false)
     }
     //resizeWindow__________________________________________________________________________________
     val activity: Activity = LocalContext.current as Activity
@@ -111,23 +138,196 @@ fun AddInfoScreen(
                 labelNoteScreen = currentLabelScreen,
                 localDate = LocalDate.now().toString()
             )
-            noteViewModel.addNoteEntityInDB(noteEntity = noteEntity)
             /** add notification ________________________________________________*/
             if (currentLabelScreen == reminderScreenLabel) {
-                val alarmSchedulerImpl = AlarmSchedulerImpl(context)
-
-                val modelAlarmItem = ModelAlarmItem(
-                    id = noteEntity.id ?: 0,
-                    time = System.currentTimeMillis() + 1000,
-                    noteEntity.labelNote
-                )
-                alarmSchedulerImpl.scheduler(item = modelAlarmItem)
+//                val alarmSchedulerImpl = AlarmSchedulerImpl(context)
+//
+//                val modelAlarmItem = ModelAlarmItem(
+//                    id = noteEntity.id ?: 0,
+//                    time = System.currentTimeMillis() + 1000,
+//                    noteEntity.labelNote
+//                )
+//                alarmSchedulerImpl.scheduler(item = modelAlarmItem)
+                isShowAlert.value = true
+            } else {
+                noteViewModel.addNoteEntityInDB(noteEntity = noteEntity)
+                onFABclickListener()
             }
             /** add notification ________________________________________________*/
 
-            onFABclickListener()
+
         } else {
             isError.value = true
         }
     })
+    if (isShowAlert.value) {
+        MyAlertPicker(
+            onDismissRequest = { isShowAlert.value = false },
+            onButtonClickListener = {}
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+//@Preview(showBackground = true, showSystemUi = true)
+fun MyAlertPicker(
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit = {},
+    onButtonClickListener: () -> Unit = {},
+) {
+    val timePickerState = rememberTimePickerState()
+
+    val isShowTimePicker = remember {
+        mutableStateOf(false)
+    }
+    val shape = RoundedCornerShape(8.dp)
+    val labelDate = rememberSaveable {
+        mutableStateOf("23:14:2023")
+    }
+    val time = rememberSaveable {
+        mutableStateOf("")
+    }
+    AlertDialog(onDismissRequest = onDismissRequest) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Card(
+                modifier = modifier.padding(16.dp)
+            ) {
+                Column(
+                    modifier = modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        modifier = modifier.padding(bottom = 16.dp),
+                        text = labelDate.value,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Divider()
+                    Box(
+                        modifier = modifier
+                            .clickable { isShowTimePicker.value = true }
+                            .fillMaxWidth()
+                            .border(
+                                width = 2.dp,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                shape = shape
+                            ),
+                    ) {
+                        Row(
+                            modifier = modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = modifier.weight(1f),
+                                text = time.value
+                            )
+                            Image(
+                                imageVector = Icons.Default.ArrowDropDown,
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.heightIn(8.dp))
+                    Box(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = 2.dp,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                shape = shape
+                            )
+                    ) {
+                        Row(
+                            modifier = modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = modifier.weight(1f),
+                                text = "TIME"
+                            )
+                            Image(
+                                imageVector = Icons.Default.ArrowDropDown,
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
+                            )
+                        }
+                    }
+                    Button(onClick = { onButtonClickListener() }) {
+                        Image(
+                            imageVector = Icons.Default.Done,
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background)
+                        )
+                    }
+                }
+            }
+
+        }
+    }
+    if (isShowTimePicker.value) {
+        TimePickerAlert(
+            timePickerState = timePickerState,
+            onDismissRequest = { isShowTimePicker.value = false },
+            onDoneClickListener = {
+                time.value = "${timePickerState.hour}:${timePickerState.minute}"
+            })
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview(showSystemUi = true, showBackground = true)
+fun TimePickerAlert(
+    modifier: Modifier = Modifier,
+    timePickerState: TimePickerState = rememberTimePickerState(),
+    onDismissRequest: () -> Unit = {},
+    onDoneClickListener: () -> Unit = {}
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest
+    ) {
+        Box( modifier = modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Card {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TimePicker(state = timePickerState)
+                    Row() {
+                        Button(
+                            modifier = modifier.padding(bottom = 16.dp),
+                            onClick = {
+                            onDismissRequest()
+                        }) {
+                            Image(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background)
+                            )
+                        }
+                        Spacer(modifier = modifier.width(32.dp))
+                        Button(
+                            modifier = modifier.padding(bottom = 16.dp),
+                            onClick = {
+                            onDoneClickListener()
+                            onDismissRequest()
+                        }) {
+                            Image(
+                                imageVector = Icons.Default.Done,
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 }
