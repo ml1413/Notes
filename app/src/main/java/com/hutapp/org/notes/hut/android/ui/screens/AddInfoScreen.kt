@@ -1,7 +1,6 @@
 package com.hutapp.org.notes.hut.android.ui.screens
 
 import android.app.Activity
-import android.util.Log
 import android.view.WindowManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,6 +27,8 @@ import androidx.compose.ui.text.intl.Locale
 import com.hutapp.org.notes.hut.android.R
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
+import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
+import com.hutapp.org.notes.hut.android.notification.ModelAlarmItem
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 import java.time.LocalDate
@@ -98,6 +99,10 @@ fun AddInfoScreen(
                 textMessage.value = it
             })
     }
+    /** add notification ________________________________________________*/
+    val reminderScreenLabel = stringResource(id = R.string.reminding)
+    val context = LocalContext.current
+    /** add notification ________________________________________________*/
     MyFAB(iconForFAB = Icons.Default.Done, onFABClisk = {
         if (textLabel.value.isNotBlank() && textMessage.value.isNotBlank()) {
             val noteEntity = NoteEntity(
@@ -107,6 +112,19 @@ fun AddInfoScreen(
                 localDate = LocalDate.now().toString()
             )
             noteViewModel.addNoteEntityInDB(noteEntity = noteEntity)
+            /** add notification ________________________________________________*/
+            if (currentLabelScreen == reminderScreenLabel) {
+                val alarmSchedulerImpl = AlarmSchedulerImpl(context)
+
+                val modelAlarmItem = ModelAlarmItem(
+                    id = noteEntity.id ?: 0,
+                    time = System.currentTimeMillis() + 1000,
+                    noteEntity.labelNote
+                )
+                alarmSchedulerImpl.scheduler(item = modelAlarmItem)
+            }
+            /** add notification ________________________________________________*/
+
             onFABclickListener()
         } else {
             isError.value = true
