@@ -1,13 +1,13 @@
-package com.hutapp.org.notes.hut.android.ui.screens
+package com.hutapp.org.notes.hut.android.ui.screens.AddInfoScreen
 
 import android.app.Activity
+import android.util.Log
 import android.view.WindowManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,15 +15,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +28,7 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,11 +49,16 @@ import androidx.compose.ui.unit.sp
 import com.hutapp.org.notes.hut.android.R
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
+import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
+import com.hutapp.org.notes.hut.android.notification.ModelAlarmItem
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
 import com.hutapp.org.notes.hut.android.ui.screens.calendar_screen.MyCalendar
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun AddInfoScreen(
@@ -87,6 +88,9 @@ fun AddInfoScreen(
     }
     val isShowAlert = rememberSaveable {
         mutableStateOf(false)
+    }
+    val noteEntityForSave: MutableState<NoteEntity?> = remember {
+        mutableStateOf(null)
     }
     //resizeWindow__________________________________________________________________________________
     val activity: Activity = LocalContext.current as Activity
@@ -130,53 +134,62 @@ fun AddInfoScreen(
     }
     /** add notification ________________________________________________*/
     val reminderScreenLabel = stringResource(id = R.string.reminding)
-    val context = LocalContext.current
     /** add notification ________________________________________________*/
     MyFAB(iconForFAB = Icons.Default.Done, onFABClisk = {
         if (textLabel.value.isNotBlank() && textMessage.value.isNotBlank()) {
-            val noteEntity = NoteEntity(
+            noteEntityForSave.value = NoteEntity(
                 labelNote = textLabel.value.capitalize(Locale.current),
                 message = textMessage.value,
                 labelNoteScreen = currentLabelScreen,
                 localDate = LocalDate.now().toString()
             )
-            /** add notification ________________________________________________*/
+
             if (currentLabelScreen == reminderScreenLabel) {
-//                val alarmSchedulerImpl = AlarmSchedulerImpl(context)
-//
-//                val modelAlarmItem = ModelAlarmItem(
-//                    id = noteEntity.id ?: 0,
-//                    time = System.currentTimeMillis() + 1000,
-//                    noteEntity.labelNote
-//                )
-//                alarmSchedulerImpl.scheduler(item = modelAlarmItem)
                 isShowAlert.value = true
             } else {
-                noteViewModel.addNoteEntityInDB(noteEntity = noteEntity)
+                noteEntityForSave.value?.let { noteEntity ->
+                    noteViewModel.addNoteEntityInDB(noteEntity = noteEntity)
+                }
                 onFABclickListener()
             }
-            /** add notification ________________________________________________*/
-
-
         } else {
             isError.value = true
         }
     })
+    /** add notification ________________________________________________*/
     if (isShowAlert.value) {
+        val context = LocalContext.current
         MyAlertPicker(
             onDismissRequest = { isShowAlert.value = false },
-            onDoneClickListener = {}
+            onDoneClickListener = { timeMiles ->
+                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
+                Log.d("TAG1", "AddInfoScreen: ${sdf.format(Date(timeMiles))}")
+
+                noteEntityForSave.value?.let { noteEntity ->
+                    noteViewModel.addNoteEntityInDB(noteEntity = noteEntity)
+
+                    val alarmSchedulerImpl = AlarmSchedulerImpl(context)
+
+                    val modelAlarmItem = ModelAlarmItem(
+                        id = noteEntity.id ?: 0,
+                        time = timeMiles,
+                        noteEntity.labelNote
+                    )
+                    alarmSchedulerImpl.scheduler(item = modelAlarmItem)
+                }
+                onFABclickListener()
+            }
         )
+        /** add notification ________________________________________________*/
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-//@Preview(showBackground = true, showSystemUi = true)
 fun MyAlertPicker(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},
-    onDoneClickListener: () -> Unit = {},
+    onDoneClickListener: (Long) -> Unit = {},
 ) {
     val localDateState = rememberSaveable { mutableStateOf(LocalDate.now()) }
 
@@ -198,7 +211,16 @@ fun MyAlertPicker(
 
     PickerAlert(
         onDismissRequest = onDismissRequest,
-        onDoneClickListener = onDoneClickListener,
+        onDoneClickListener = {
+
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.YEAR, localDateState.value.year)
+            calendar.set(Calendar.DAY_OF_YEAR, localDateState.value.dayOfYear)
+            calendar.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
+            calendar.set(Calendar.MINUTE, timePickerState.minute)
+            val timeMiles = calendar.timeInMillis
+            onDoneClickListener(timeMiles)
+        },
         content = {
             Column(
                 modifier = modifier.padding(16.dp),
@@ -289,60 +311,6 @@ fun MyAlertPicker(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PickerAlert(
-    modifier: Modifier = Modifier,
-    onDismissRequest: () -> Unit = {},
-    onDoneClickListener: () -> Unit = {},
-    content: @Composable ColumnScope.() -> Unit = {},
-) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest
-    ) {
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Card(
-                modifier = modifier.padding(16.dp)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    content()
-                    Row() {
-                        Button(
-                            modifier = modifier.padding(bottom = 16.dp),
-                            onClick = {
-                                onDismissRequest()
-                            }) {
-                            Image(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = null,
-                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background)
-                            )
-                        }
-                        Spacer(modifier = modifier.width(32.dp))
-                        Button(
-                            modifier = modifier.padding(bottom = 16.dp),
-                            onClick = {
-                                onDoneClickListener()
-                                onDismissRequest()
-                            }) {
-                            Image(
-                                imageVector = Icons.Default.Done,
-                                contentDescription = null,
-                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-}
 
 private fun formatMinute(minute: String): String {
     return if (minute.length == 1) "0$minute" else minute

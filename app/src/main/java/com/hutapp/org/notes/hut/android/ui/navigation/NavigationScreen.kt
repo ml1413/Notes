@@ -12,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.DrawerItemStateViewModel
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.MyDrawerSheet
-import com.hutapp.org.notes.hut.android.ui.screens.AddInfoScreen
+import com.hutapp.org.notes.hut.android.ui.screens.AddInfoScreen.AddInfoScreen
 import com.hutapp.org.notes.hut.android.ui.screens.NoteLazyScreen
 import com.hutapp.org.notes.hut.android.ui.screens.ReadNoteScreen
 import com.hutapp.org.notes.hut.android.ui.screens.SettingsScreen
