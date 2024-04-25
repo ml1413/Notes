@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun MyCalendar(
     modifier: Modifier = Modifier,
-    listEntity: State<List<NoteEntity>?>,
+    listEntity: State<List<NoteEntity>?> = mutableStateOf(emptyList()),
     onItemClickListener: (LocalDate) -> Unit
 ) {
     val localDate = rememberSaveable { mutableStateOf(LocalDate.now()) }

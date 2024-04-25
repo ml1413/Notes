@@ -33,6 +33,7 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -53,8 +54,10 @@ import com.hutapp.org.notes.hut.android.R
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
+import com.hutapp.org.notes.hut.android.ui.screens.calendar_screen.MyCalendar
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 import java.time.LocalDate
+import java.time.LocalTime
 
 @Composable
 fun AddInfoScreen(
@@ -82,7 +85,7 @@ fun AddInfoScreen(
     LaunchedEffect(key1 = null) {
         focusRequester.requestFocus()
     }
-    val isShowAlert = remember {
+    val isShowAlert = rememberSaveable {
         mutableStateOf(false)
     }
     //resizeWindow__________________________________________________________________________________
@@ -175,16 +178,25 @@ fun MyAlertPicker(
     onDismissRequest: () -> Unit = {},
     onDoneClickListener: () -> Unit = {},
 ) {
-    val timePickerState = rememberTimePickerState()
+    val localDateState = rememberSaveable { mutableStateOf(LocalDate.now()) }
+
+    val localTime = LocalTime.now()
+    val timePickerState =
+        rememberTimePickerState(initialHour = localTime.hour, initialMinute = localTime.minute)
 
     val isShowTimePicker = remember { mutableStateOf(false) }
     val isShowDatePicker = remember { mutableStateOf(false) }
 
     val shape = RoundedCornerShape(8.dp)
-    val labelDate = rememberSaveable { mutableStateOf("23:14:2023") }
-    val time = rememberSaveable { mutableStateOf("") }
+    val labelDate = remember {
+        mutableStateOf("")
+    }
+    SideEffect {
+        labelDate.value =
+            "${localDateState.value} ${timePickerState.hour}:" + formatMinute(minute = timePickerState.minute.toString())
+    }
 
-    PickerAlert (
+    PickerAlert(
         onDismissRequest = onDismissRequest,
         onDoneClickListener = onDoneClickListener,
         content = {
@@ -192,6 +204,7 @@ fun MyAlertPicker(
                 modifier = modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                //label alert  12-12-2024  12:34
                 Text(
                     modifier = modifier.padding(bottom = 16.dp),
                     text = labelDate.value,
@@ -204,7 +217,7 @@ fun MyAlertPicker(
                         .clickable { isShowTimePicker.value = true }
                         .fillMaxWidth()
                         .border(
-                            width = 2.dp,
+                            width = 1.dp,
                             color = MaterialTheme.colorScheme.onBackground,
                             shape = shape
                         ),
@@ -215,7 +228,7 @@ fun MyAlertPicker(
                     ) {
                         Text(
                             modifier = modifier.weight(1f),
-                            text = time.value
+                            text = "${timePickerState.hour}:" + formatMinute(minute = timePickerState.minute.toString())
                         )
                         Image(
                             imageVector = Icons.Default.ArrowDropDown,
@@ -227,9 +240,10 @@ fun MyAlertPicker(
                 Spacer(modifier = Modifier.heightIn(8.dp))
                 Box(
                     modifier = modifier
+                        .clickable { isShowDatePicker.value = true }
                         .fillMaxWidth()
                         .border(
-                            width = 2.dp,
+                            width = 1.dp,
                             color = MaterialTheme.colorScheme.onBackground,
                             shape = shape
                         )
@@ -240,7 +254,7 @@ fun MyAlertPicker(
                     ) {
                         Text(
                             modifier = modifier.weight(1f),
-                            text = "TIME"
+                            text = localDateState.value.toString()
                         )
                         Image(
                             imageVector = Icons.Default.ArrowDropDown,
@@ -254,99 +268,24 @@ fun MyAlertPicker(
 
     )
 
-//    AlertDialog(onDismissRequest = onDismissRequest) {
-//        Box(
-//            modifier = Modifier.fillMaxSize(),
-//            contentAlignment = Alignment.Center
-//        ) {
-//            Card(
-//                modifier = modifier.padding(16.dp)
-//            ) {
-//                Column(
-//                    modifier = modifier.padding(16.dp),
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    Text(
-//                        modifier = modifier.padding(bottom = 16.dp),
-//                        text = labelDate.value,
-//                        fontSize = 18.sp,
-//                        fontWeight = FontWeight.Bold
-//                    )
-//                    Divider()
-//                    Box(
-//                        modifier = modifier
-//                            .clickable { isShowTimePicker.value = true }
-//                            .fillMaxWidth()
-//                            .border(
-//                                width = 2.dp,
-//                                color = MaterialTheme.colorScheme.onBackground,
-//                                shape = shape
-//                            ),
-//                    ) {
-//                        Row(
-//                            modifier = modifier.padding(16.dp),
-//                            verticalAlignment = Alignment.CenterVertically
-//                        ) {
-//                            Text(
-//                                modifier = modifier.weight(1f),
-//                                text = time.value
-//                            )
-//                            Image(
-//                                imageVector = Icons.Default.ArrowDropDown,
-//                                contentDescription = null,
-//                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
-//                            )
-//                        }
-//                    }
-//                    Spacer(modifier = Modifier.heightIn(8.dp))
-//                    Box(
-//                        modifier = modifier
-//                            .fillMaxWidth()
-//                            .border(
-//                                width = 2.dp,
-//                                color = MaterialTheme.colorScheme.onBackground,
-//                                shape = shape
-//                            )
-//                    ) {
-//                        Row(
-//                            modifier = modifier.padding(16.dp),
-//                            verticalAlignment = Alignment.CenterVertically
-//                        ) {
-//                            Text(
-//                                modifier = modifier.weight(1f),
-//                                text = "TIME"
-//                            )
-//                            Image(
-//                                imageVector = Icons.Default.ArrowDropDown,
-//                                contentDescription = null,
-//                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
-//                            )
-//                        }
-//                    }
-//                    Button(onClick = { onDoneClickListener() }) {
-//                        Image(
-//                            imageVector = Icons.Default.Done,
-//                            contentDescription = null,
-//                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background)
-//                        )
-//                    }
-//                }
-//            }
-//
-//        }
-//    }
     if (isShowTimePicker.value) {
         PickerAlert(
             onDismissRequest = { isShowTimePicker.value = false },
-            onDoneClickListener = {
-                time.value = "${timePickerState.hour}:${timePickerState.minute}"
-            },
             content = {
                 TimePicker(state = timePickerState)
             })
     }
     if (isShowDatePicker.value) {
-
+        PickerAlert(
+            onDismissRequest = { isShowDatePicker.value = false },
+            content = {
+                MyCalendar(
+                    onItemClickListener = {
+                        localDateState.value = it
+                    }
+                )
+            }
+        )
     }
 }
 
@@ -366,7 +305,7 @@ fun PickerAlert(
             contentAlignment = Alignment.Center
         ) {
             Card(
-                modifier =  modifier.padding(16.dp)
+                modifier = modifier.padding(16.dp)
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -404,3 +343,8 @@ fun PickerAlert(
 
     }
 }
+
+private fun formatMinute(minute: String): String {
+    return if (minute.length == 1) "0$minute" else minute
+}
+
