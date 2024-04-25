@@ -64,6 +64,7 @@ import java.util.Date
 fun AddInfoScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
+    alarmSchedulerImpl : AlarmSchedulerImpl,
     noteViewModel: NoteViewModel,
     tabRowCurrentItemViewModel: TabRowCurrentItemViewModel,
     onFABclickListener: () -> Unit = {}
@@ -158,7 +159,6 @@ fun AddInfoScreen(
     })
     /** add notification ________________________________________________*/
     if (isShowAlert.value) {
-        val context = LocalContext.current
         MyAlertPicker(
             onDismissRequest = { isShowAlert.value = false },
             onDoneClickListener = { timeMiles ->
@@ -167,8 +167,6 @@ fun AddInfoScreen(
 
                 noteEntityForSave.value?.let { noteEntity ->
                     noteViewModel.addNoteEntityInDB(noteEntity = noteEntity)
-
-                    val alarmSchedulerImpl = AlarmSchedulerImpl(context)
 
                     val modelAlarmItem = ModelAlarmItem(
                         id = noteEntity.id ?: 0,

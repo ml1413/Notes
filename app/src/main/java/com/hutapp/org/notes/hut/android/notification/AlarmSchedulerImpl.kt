@@ -13,16 +13,16 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
         val intent = Intent(context, AlarmReceiver::class.java)
         putExtra(item = item, intent = intent)
 
-        val pendingIntent = getPendingIntent(intent = intent)
+        val pendingIntent = getPendingIntent(intent = intent, itemId = item.id)
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, item.time, pendingIntent)
     }
 
 
-    override fun cancel(item: ModelAlarmItem) {
+    override fun cancel(itemId: Int) {
         val intent = Intent(context, AlarmReceiver::class.java)
 
-        val pendingIntent = getPendingIntent(intent = intent)
+        val pendingIntent = getPendingIntent(intent = intent, itemId = itemId)
 
         alarmManager.cancel(pendingIntent)
     }
@@ -34,9 +34,9 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
         return intent
     }
 
-    private fun getPendingIntent(intent: Intent) = PendingIntent.getBroadcast(
+    private fun getPendingIntent(intent: Intent, itemId: Int) = PendingIntent.getBroadcast(
         context,
-        0,
+        itemId,
         intent,
         PendingIntent.FLAG_UPDATE_CURRENT
     )

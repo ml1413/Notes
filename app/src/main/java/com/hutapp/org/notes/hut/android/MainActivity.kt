@@ -15,6 +15,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
+import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.DrawerItemStateViewModel
 import com.hutapp.org.notes.hut.android.ui.navigation.NavigationScreen
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
@@ -51,9 +52,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val noteViewModel: NoteViewModel = viewModel()
     val context = LocalContext.current
     val tabItemList: TabItemList = TabItemList(context = context)
+    val alarmSchedulerImpl = AlarmSchedulerImpl(context = context)
     NavigationScreen(
         noteViewModel = noteViewModel,
         tabItemList = tabItemList,
+        alarmSchedulerImpl = alarmSchedulerImpl ,
         tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
         drawerItemStateViewModel = drawerItemStateViewModel,
         currentScreenViewModel = currentScreenViewModel

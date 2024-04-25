@@ -10,6 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
+import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.DrawerItemStateViewModel
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.MyDrawerSheet
 import com.hutapp.org.notes.hut.android.ui.screens.AddInfoScreen.AddInfoScreen
@@ -30,6 +31,7 @@ fun NavigationScreen(
     modifier: Modifier = Modifier,
     noteViewModel: NoteViewModel,
     tabItemList: TabItemList,
+    alarmSchedulerImpl : AlarmSchedulerImpl,
     tabRowCurrentItemViewModel: TabRowCurrentItemViewModel,
     drawerItemStateViewModel: DrawerItemStateViewModel,
     currentScreenViewModel: CurrentScreenViewModel,
@@ -128,6 +130,7 @@ fun NavigationScreen(
                         addScreenContent = {
                             AddInfoScreen(
                                 tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
+                                alarmSchedulerImpl= alarmSchedulerImpl ,
                                 paddingValues = paddingValues,
                                 noteViewModel = noteViewModel,
                                 onFABclickListener = {
