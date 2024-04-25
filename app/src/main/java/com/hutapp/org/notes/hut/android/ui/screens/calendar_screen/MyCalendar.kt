@@ -29,7 +29,6 @@ import java.time.format.DateTimeFormatter
 fun MyCalendar(
     modifier: Modifier = Modifier,
     listEntity: State<List<NoteEntity>?>,
-    noteViewModel: NoteViewModel,
     onItemClickListener: (LocalDate) -> Unit
 ) {
     val localDate = rememberSaveable { mutableStateOf(LocalDate.now()) }
@@ -58,22 +57,10 @@ fun MyCalendar(
                 )
             }
         }
-        //________________
-        val listDay = listOf(
-            stringResource(R.string.mon),
-            stringResource(R.string.tue),
-            stringResource(R.string.wed),
-            stringResource(R.string.thu),
-            stringResource(R.string.fri),
-            stringResource(R.string.sat),
-            stringResource(R.string.sun)
-        )
-        //_______________
+
         CustomGrid(
-            listDay = listDay,
             listEntity=listEntity,
             daysInMonthList = daysInMonthList,
-            noteViewModel = noteViewModel,
             onItemClickListener = onItemClickListener
         )
     }

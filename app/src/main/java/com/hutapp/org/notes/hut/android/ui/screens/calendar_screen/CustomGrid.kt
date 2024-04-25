@@ -14,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.hutapp.org.notes.hut.android.R
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import java.time.LocalDate
@@ -23,12 +25,21 @@ import java.time.LocalDate
 @Composable
 fun CustomGrid(
     modifier: Modifier = Modifier,
-    listDay: List<String> = emptyList(),
     listEntity: State<List<NoteEntity>?>,
     daysInMonthList: List<LocalDate?> = emptyList(),
-    noteViewModel: NoteViewModel,
     onItemClickListener: (LocalDate) -> Unit = {}
 ) {
+    //________________
+    val listDay = listOf(
+        stringResource(R.string.mon),
+        stringResource(R.string.tue),
+        stringResource(R.string.wed),
+        stringResource(R.string.thu),
+        stringResource(R.string.fri),
+        stringResource(R.string.sat),
+        stringResource(R.string.sun)
+    )
+    //_______________
     Box(
         modifier = modifier.wrapContentSize(),
         contentAlignment = Alignment.Center
@@ -96,4 +107,5 @@ fun CustomGrid(
 
     }
 }
+
 

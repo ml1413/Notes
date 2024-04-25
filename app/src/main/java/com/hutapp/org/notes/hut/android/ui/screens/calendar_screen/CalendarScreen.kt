@@ -40,7 +40,6 @@ fun CalendarScreen(
         item {
             MyCalendar(
                 listEntity = listEntity,
-                noteViewModel = noteViewModel,
                 onItemClickListener = { localDate ->
                     choiceDate.value = localDate.toString()
                 }
