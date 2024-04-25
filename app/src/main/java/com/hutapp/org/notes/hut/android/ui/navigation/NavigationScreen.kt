@@ -1,5 +1,6 @@
 package com.hutapp.org.notes.hut.android.ui.navigation
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
@@ -8,6 +9,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.compose.rememberNavController
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
@@ -31,7 +33,7 @@ fun NavigationScreen(
     modifier: Modifier = Modifier,
     noteViewModel: NoteViewModel,
     tabItemList: TabItemList,
-    alarmSchedulerImpl : AlarmSchedulerImpl,
+    alarmSchedulerImpl: AlarmSchedulerImpl,
     tabRowCurrentItemViewModel: TabRowCurrentItemViewModel,
     drawerItemStateViewModel: DrawerItemStateViewModel,
     currentScreenViewModel: CurrentScreenViewModel,
@@ -118,6 +120,7 @@ fun NavigationScreen(
                             TrashScreen(
                                 paddingValues = paddingValues,
                                 currentScreenViewModel = currentScreenViewModel,
+                                alarmSchedulerImpl = alarmSchedulerImpl,
                                 noteViewModel = noteViewModel,
                                 isShowDeleteInTrashItem = true,
                                 onItemClickListener = {},
@@ -130,7 +133,7 @@ fun NavigationScreen(
                         addScreenContent = {
                             AddInfoScreen(
                                 tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
-                                alarmSchedulerImpl= alarmSchedulerImpl ,
+                                alarmSchedulerImpl = alarmSchedulerImpl,
                                 paddingValues = paddingValues,
                                 noteViewModel = noteViewModel,
                                 onFABclickListener = {
@@ -141,6 +144,7 @@ fun NavigationScreen(
                         readScreenContent = { noteEntityId ->
                             ReadNoteScreen(
                                 paddingValues = paddingValues,
+                                alarmSchedulerImpl = alarmSchedulerImpl,
                                 noteViewModel = noteViewModel,
                                 noteEntityId = noteEntityId,
                                 onFABClickListener = {

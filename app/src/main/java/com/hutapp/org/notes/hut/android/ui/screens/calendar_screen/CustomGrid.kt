@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.hutapp.org.notes.hut.android.R
 import com.hutapp.org.notes.hut.android.db.NoteEntity
-import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import java.time.LocalDate
 
 @Composable
@@ -84,7 +83,7 @@ fun CustomGrid(
                                     Text(text = localDate.dayOfMonth.toString())
                                     val list =
                                         listEntity.value?.filter { !it.isDelete }
-                                            ?.map { it.localDate.toString() }
+                                            ?.map { it.addNoteDate.toString() }
                                     list?.let {
                                         if (it.contains(localDate.toString()))
                                             Divider(

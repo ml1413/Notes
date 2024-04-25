@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyItemBox
@@ -47,7 +46,7 @@ fun CalendarScreen(
         }
         listEntity.value?.let { listNoteEntity ->
             val listNotes = listNoteEntity.filter {
-                it.localDate == choiceDate.value && !it.isDelete
+                it.addNoteDate == choiceDate.value && !it.isDelete
             }
             items(listNotes) { noteEntity ->
                 Log.d("TAG1", "items: ${listNotes.size}")

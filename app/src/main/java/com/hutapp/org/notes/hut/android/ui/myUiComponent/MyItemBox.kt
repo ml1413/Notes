@@ -71,7 +71,7 @@ fun MyItemBox(
                             .fillMaxWidth()
                             .padding(start = 8.dp)
                     ) {
-                        Text(text = noteEntity.localDate)
+                        Text(text = noteEntity.addNoteDate)
                     }
                     Text(
                         modifier = modifier.padding(8.dp),
@@ -147,7 +147,7 @@ private fun Preview(
         labelNoteScreen = "labelNoteScreen",
         isDelete = true,
         message = "basdfdsfdsf  sdfsdf fd s",
-        localDate = LocalDate.now().toString()
+        addNoteDate = LocalDate.now().toString()
     )
     MyItemBox(currentScreenViewModel = currentScreenViewModel, noteEntity = noteEntity)
 }

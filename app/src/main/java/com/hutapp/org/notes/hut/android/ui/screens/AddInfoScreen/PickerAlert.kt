@@ -4,13 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -28,6 +26,7 @@ import androidx.compose.ui.unit.dp
 fun PickerAlert(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},
+    onCancel: () -> Unit = {},
     onDoneClickListener: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit = {},
 ) {
@@ -45,31 +44,17 @@ fun PickerAlert(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     content()
-                    Row() {
-                        Button(
-                            modifier = modifier.padding(bottom = 16.dp),
-                            onClick = {
-                                onDismissRequest()
-                            }) {
-                            Image(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = null,
-                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background)
-                            )
-                        }
-                        Spacer(modifier = modifier.width(32.dp))
-                        Button(
-                            modifier = modifier.padding(bottom = 16.dp),
-                            onClick = {
-                                onDoneClickListener()
-                                onDismissRequest()
-                            }) {
-                            Image(
-                                imageVector = Icons.Default.Done,
-                                contentDescription = null,
-                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background)
-                            )
-                        }
+                    Button(
+                        modifier = modifier.padding(bottom = 16.dp),
+                        onClick = {
+                            onDoneClickListener()
+                            onDismissRequest()
+                        }) {
+                        Image(
+                            imageVector = Icons.Default.Done,
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background)
+                        )
                     }
                 }
             }

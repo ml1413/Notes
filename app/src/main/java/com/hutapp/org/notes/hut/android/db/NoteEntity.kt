@@ -11,5 +11,6 @@ data class NoteEntity(
     val labelNote: String,
     val isDelete: Boolean = false,
     val message: String,
-    val localDate: String
+    val timeNotification: Long? = null,
+    val addNoteDate: String
 )

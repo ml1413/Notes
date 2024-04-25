@@ -11,6 +11,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hutapp.org.notes.hut.android.alert.MyAlert
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
+import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
+import com.hutapp.org.notes.hut.android.notification.ModelAlarmItem
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyLazyForItemNotes
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
 
@@ -19,6 +21,7 @@ fun TrashScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     currentScreenViewModel: CurrentScreenViewModel,
+    alarmSchedulerImpl: AlarmSchedulerImpl,
     noteViewModel: NoteViewModel,
     itemForDeleteViewModel: ItemForDeleteViewModel = viewModel(),
     isShowDeleteInTrashItem: Boolean,
@@ -34,31 +37,48 @@ fun TrashScreen(
         val filterList = oldListEntity.filter {
             it.isDelete == isShowDeleteInTrashItem
         }
-            MyLazyForItemNotes(
-                paddingValues = paddingValues,
-                filterList = filterList,
-                currentScreenViewModel = currentScreenViewModel,
-                onItemClickListener = onItemClickListener,
-                onItemIconClickListener = { noteEntity ->
-                    itemForDeleteViewModel.setValue(noteEntity = noteEntity)
-                    alertIsVisible.value = true
-                }
-            )
-
-            if (alertIsVisible.value) {
-                MyAlert(
-                    onDismiss = { alertIsVisible.value = false },
-                    onDelete = {
-                        itemForDeleteViewModel.currentEntity.value?.let { noteEntity ->
-                            noteViewModel.deleteNoteFromDB(noteEntity = noteEntity)
-                        }
-                    },
-                    onRestore = {
-                        itemForDeleteViewModel.currentEntity.value?.let { noteEntity ->
-                            val noteForRestore = noteEntity.copy(isDelete = false)
-                            noteViewModel.updateNote(noteEntity = noteForRestore)
-                        }
-                    })
+        MyLazyForItemNotes(
+            paddingValues = paddingValues,
+            filterList = filterList,
+            currentScreenViewModel = currentScreenViewModel,
+            onItemClickListener = onItemClickListener,
+            onItemIconClickListener = { noteEntity ->
+                itemForDeleteViewModel.setValue(noteEntity = noteEntity)
+                alertIsVisible.value = true
             }
+        )
+
+        if (alertIsVisible.value) {
+            MyAlert(
+                onDismiss = { alertIsVisible.value = false },
+                onDelete = {
+                    itemForDeleteViewModel.currentEntity.value?.let { noteEntity ->
+                        noteViewModel.deleteNoteFromDB(noteEntity = noteEntity)
+                    }
+                },
+                onRestore = {
+                    itemForDeleteViewModel.currentEntity.value?.let { noteEntity ->
+                        // restore note
+                        val noteForRestore = noteEntity.copy(isDelete = false)
+                        noteViewModel.updateNote(noteEntity = noteForRestore)
+                        // restore notification
+                        noteForRestore.timeNotification?.let { timeNotification ->
+                            val currentTime = System.currentTimeMillis()
+                            if (currentTime < timeNotification) {
+                                noteForRestore.id?.let { id ->
+                                    val item = ModelAlarmItem(
+                                        id = id,
+                                        time = timeNotification,
+                                        message = noteForRestore.labelNote
+                                    )
+                                    alarmSchedulerImpl.scheduler(item = item)
+                                }
+                            }
+                        }
+                    }
+
+                })
         }
     }
+}
+

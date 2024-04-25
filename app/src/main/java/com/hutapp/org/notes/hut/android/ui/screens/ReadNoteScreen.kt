@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,12 +18,14 @@ import androidx.compose.ui.unit.dp
 import com.hutapp.org.notes.hut.android.R
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
+import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
 
 @Composable
 fun ReadNoteScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
+    alarmSchedulerImpl: AlarmSchedulerImpl,
     noteViewModel: NoteViewModel,
     noteEntityId: Int,
     onFABClickListener: () -> Unit = {}
@@ -66,9 +67,13 @@ fun ReadNoteScreen(
                 noteEntityId = noteEntityId,
                 noteViewModel = noteViewModel
             )
-
-            val newNoteEntity = noteEntity.copy(isDelete = true)
-            noteViewModel.updateNote(noteEntity = newNoteEntity)
+            // mark delete entity
+            val noteForDeleteInTrash = noteEntity.copy(isDelete = true)
+            noteViewModel.updateNote(noteEntity = noteForDeleteInTrash)
+            // cancel notification
+            noteForDeleteInTrash.id?.let { noteId->
+                alarmSchedulerImpl.cancel(itemId = noteId)
+            }
             onFABClickListener()
         })
     }
@@ -86,7 +91,7 @@ private fun getNoteEntityFromId(
         labelNote = context.getString(R.string.no_label),
         message = context.getString(R.string.no_message),
         labelNoteScreen = context.getString(R.string.no_text),
-        localDate = ""
+        addNoteDate = ""
     )
 }
 

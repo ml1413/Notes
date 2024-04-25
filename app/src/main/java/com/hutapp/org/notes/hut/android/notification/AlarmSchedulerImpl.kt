@@ -4,11 +4,13 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 
 class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
 
     override fun scheduler(item: ModelAlarmItem) {
+        Log.d("TAG1", "scheduler: ${item.id} ")
 
         val intent = Intent(context, AlarmReceiver::class.java)
         putExtra(item = item, intent = intent)
@@ -21,7 +23,7 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
 
     override fun cancel(itemId: Int) {
         val intent = Intent(context, AlarmReceiver::class.java)
-
+        Log.d("TAG1", "cancel: $itemId ")
         val pendingIntent = getPendingIntent(intent = intent, itemId = itemId)
 
         alarmManager.cancel(pendingIntent)
