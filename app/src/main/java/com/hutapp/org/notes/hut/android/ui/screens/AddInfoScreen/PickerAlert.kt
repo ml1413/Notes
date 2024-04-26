@@ -16,17 +16,19 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PickerAlert(
     modifier: Modifier = Modifier,
+    isError:MutableState<Boolean> ,
     onDismissRequest: () -> Unit = {},
-    onCancel: () -> Unit = {},
     onDoneClickListener: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit = {},
 ) {
@@ -45,6 +47,7 @@ fun PickerAlert(
                 ) {
                     content()
                     Button(
+                        enabled = !isError.value,
                         modifier = modifier.padding(bottom = 16.dp),
                         onClick = {
                             onDoneClickListener()

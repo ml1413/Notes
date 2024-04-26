@@ -34,4 +34,7 @@
     <string name="add_notes">Add notes</string>
     <string name="calendar">Calendar</string>
     <string name="read_notes">Read notes</string>
+    // alert time piker
+    <string name="label_time">Time</string>
+    <string name="label_date">Date</string>
 </resources>
