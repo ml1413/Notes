@@ -35,6 +35,7 @@ import com.hutapp.org.notes.hut.android.notification.ModelAlarmItem
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 import java.time.LocalDate
+import java.time.ZoneId
 
 @Composable
 fun AddInfoScreen(
@@ -120,7 +121,7 @@ fun AddInfoScreen(
                 labelNote = textLabel.value.capitalize(Locale.current),
                 message = textMessage.value,
                 labelNoteScreen = currentLabelScreen,
-                addNoteDate = LocalDate.now().toString()
+                addNoteDate = LocalDate.now(ZoneId.systemDefault()).toString()
             )
 
             if (currentLabelScreen == reminderScreenLabel) {
@@ -163,7 +164,7 @@ fun AddInfoScreen(
                                         val item = ModelAlarmItem(
                                             id = note.id,
                                             time = note.timeNotification,
-                                            message = note.message
+                                            message = note.labelNote
                                         )
                                         alarmSchedulerImpl.scheduler(item = item)
                                     }

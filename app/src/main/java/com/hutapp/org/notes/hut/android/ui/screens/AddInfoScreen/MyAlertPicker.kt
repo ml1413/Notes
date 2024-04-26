@@ -33,7 +33,9 @@ import androidx.compose.ui.unit.sp
 import com.hutapp.org.notes.hut.android.ui.screens.calendar_screen.MyCalendar
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.util.Calendar
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,9 +44,9 @@ fun MyAlertPicker(
     onDismissRequest: () -> Unit = {},
     onDoneClickListener: (Long) -> Unit = {},
 ) {
-    val localDateState = rememberSaveable { mutableStateOf(LocalDate.now()) }
+    val localDateState = rememberSaveable { mutableStateOf(LocalDate.now(ZoneId.systemDefault())) }
 
-    val localTime = LocalTime.now()
+    val localTime = LocalTime.now(ZoneId.systemDefault())
     val timePickerState =
         rememberTimePickerState(initialHour = localTime.hour, initialMinute = localTime.minute)
 
@@ -63,7 +65,6 @@ fun MyAlertPicker(
     PickerAlert(
         onDismissRequest = onDismissRequest,
         onDoneClickListener = {
-
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.YEAR, localDateState.value.year)
             calendar.set(Calendar.DAY_OF_YEAR, localDateState.value.dayOfYear)

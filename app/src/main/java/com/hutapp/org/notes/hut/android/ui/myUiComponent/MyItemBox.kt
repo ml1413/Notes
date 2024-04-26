@@ -30,6 +30,7 @@ import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.ui.navigation.Screens
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
 import java.time.LocalDate
+import java.time.ZoneId
 
 @Composable
 fun MyItemBox(
@@ -147,7 +148,7 @@ private fun Preview(
         labelNoteScreen = "labelNoteScreen",
         isDelete = true,
         message = "basdfdsfdsf  sdfsdf fd s",
-        addNoteDate = LocalDate.now().toString()
+        addNoteDate = LocalDate.now(ZoneId.systemDefault()).toString()
     )
     MyItemBox(currentScreenViewModel = currentScreenViewModel, noteEntity = noteEntity)
 }

@@ -23,6 +23,7 @@ import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -31,7 +32,7 @@ fun MyCalendar(
     listEntity: State<List<NoteEntity>?> = mutableStateOf(emptyList()),
     onItemClickListener: (LocalDate) -> Unit
 ) {
-    val localDate = rememberSaveable { mutableStateOf(LocalDate.now()) }
+    val localDate = rememberSaveable { mutableStateOf(LocalDate.now(ZoneId.systemDefault())) }
     val daysInMonthList = getDaysMontList(localDate = localDate.value)
     Column(
         modifier = modifier

@@ -15,6 +15,7 @@ class MyNotification(private val context: Context) {
         context.getSystemService(NotificationManager::class.java)
 
     fun showNotification(labelNotification: String, idNotification: Int = 1) {
+        //todo else notification
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val chanel = NotificationChannel(
                 NOTIFICATION_CHANEL_ID,
