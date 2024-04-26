@@ -37,7 +37,9 @@ fun CalendarScreen(
         contentPadding = PaddingValues(bottom = 32.dp)
     ) {
         item {
-            MyCalendar(
+            MyCalendar(modifier = modifier
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 16.dp),
                 listEntity = listEntity,
                 onItemClickListener = { localDate ->
                     choiceDate.value = localDate.toString()

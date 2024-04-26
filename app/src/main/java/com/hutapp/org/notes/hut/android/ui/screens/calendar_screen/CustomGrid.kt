@@ -1,25 +1,35 @@
 package com.hutapp.org.notes.hut.android.ui.screens.calendar_screen
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hutapp.org.notes.hut.android.R
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import java.time.LocalDate
+import java.time.ZoneId
 
 @Composable
 fun CustomGrid(
@@ -28,6 +38,7 @@ fun CustomGrid(
     daysInMonthList: List<LocalDate?> = emptyList(),
     onItemClickListener: (LocalDate) -> Unit = {}
 ) {
+    val todayLocalDate = LocalDate.now(ZoneId.systemDefault())
     //________________
     val listDay = listOf(
         stringResource(R.string.mon),
@@ -43,7 +54,9 @@ fun CustomGrid(
         modifier = modifier.wrapContentSize(),
         contentAlignment = Alignment.Center
     ) {
-
+        val selectedDate = remember {
+            mutableStateOf(0)
+        }
         var count = 0
         Column(
             modifier = modifier.fillMaxWidth()
@@ -67,11 +80,34 @@ fun CustomGrid(
                 Row(modifier = modifier.fillMaxWidth()) {
                     repeat(7) {
                         val currentLocalDate = daysInMonthList[count]
+                        val shape = RoundedCornerShape(8.dp)
+                        val color =
+                            if (currentLocalDate != null && currentLocalDate == todayLocalDate) {
+                                MaterialTheme.colorScheme.inversePrimary
+                            } else {
+                                Color.Unspecified
+                            }
                         Box(
                             modifier = modifier
+                                .clip(shape = shape)
+                                .border(
+                                    width = 1.dp,
+                                    color =
+                                    if (selectedDate.value == currentLocalDate?.dayOfMonth) {
+                                        MaterialTheme.colorScheme.primary
+                                    } else {
+                                        Color.Unspecified
+                                    },
+                                    shape = shape
+                                )
+                                .background(color)
                                 .weight(1f)
                                 .clickable {
-                                    currentLocalDate?.let { onItemClickListener(it) }
+
+                                    currentLocalDate?.let { localDate ->
+                                        selectedDate.value = localDate.dayOfMonth
+                                        onItemClickListener(localDate)
+                                    }
                                 },
                             contentAlignment = Alignment.Center
                         ) {
@@ -80,17 +116,26 @@ fun CustomGrid(
                                     modifier = modifier.padding(vertical = 12.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    Text(text = localDate.dayOfMonth.toString())
+                                    Text(
+                                        text = localDate.dayOfMonth.toString()
+                                    )
                                     val list =
                                         listEntity.value?.filter { !it.isDelete }
                                             ?.map { it.addNoteDate.toString() }
                                     list?.let {
-                                        if (it.contains(localDate.toString()))
-                                            Divider(
-                                                modifier = modifier.padding(4.dp),
-                                                thickness = 2.dp,
-                                                color = MaterialTheme.colorScheme.primary
-                                            )
+
+                                        Divider(
+                                            modifier = modifier.padding(horizontal = 12.dp),
+                                            thickness = 2.dp,
+                                            color =
+                                            if (it.contains(localDate.toString())) {
+                                                MaterialTheme.colorScheme.primary
+                                            } else {
+                                                Color.Unspecified
+                                            }
+                                        )
+
+
                                     }
                                 }
                             }
@@ -106,5 +151,3 @@ fun CustomGrid(
 
     }
 }
-
-

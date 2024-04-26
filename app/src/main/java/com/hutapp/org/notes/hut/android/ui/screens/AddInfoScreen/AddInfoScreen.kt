@@ -112,9 +112,7 @@ fun AddInfoScreen(
                 textMessage.value = it
             })
     }
-    /** add notification ________________________________________________*/
     val reminderScreenLabel = stringResource(id = R.string.reminding)
-    /** add notification ________________________________________________*/
     MyFAB(iconForFAB = Icons.Default.Done, onFABClisk = {
         if (textLabel.value.isNotBlank() && textMessage.value.isNotBlank()) {
             noteEntityForSave.value = NoteEntity(
@@ -123,6 +121,7 @@ fun AddInfoScreen(
                 labelNoteScreen = currentLabelScreen,
                 addNoteDate = LocalDate.now(ZoneId.systemDefault()).toString()
             )
+
 
             if (currentLabelScreen == reminderScreenLabel) {
                 isShowAlert.value = true
@@ -136,7 +135,7 @@ fun AddInfoScreen(
             isError.value = true
         }
     })
-    /** add notification ________________________________________________*/
+
     if (isShowAlert.value) {
         MyAlertPicker(
             onDismissRequest = { isShowAlert.value = false },

@@ -8,7 +8,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hutapp.org.notes.hut.android.alert.MyAlert
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
@@ -49,7 +48,7 @@ fun TrashScreen(
         )
 
         if (alertIsVisible.value) {
-            MyAlert(
+            MyAlertForTrash(
                 onDismiss = { alertIsVisible.value = false },
                 onDelete = {
                     itemForDeleteViewModel.currentEntity.value?.let { noteEntity ->

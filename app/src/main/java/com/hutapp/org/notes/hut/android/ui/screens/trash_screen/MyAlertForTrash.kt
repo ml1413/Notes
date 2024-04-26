@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.hutapp.org.notes.hut.android.alert
+package com.hutapp.org.notes.hut.android.ui.screens.trash_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,7 +26,7 @@ import com.hutapp.org.notes.hut.android.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
-fun MyAlert(
+fun MyAlertForTrash(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit = {},
     onDelete: () -> Unit = {},
