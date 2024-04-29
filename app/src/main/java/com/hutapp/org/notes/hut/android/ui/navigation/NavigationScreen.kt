@@ -33,7 +33,7 @@ import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 @Composable
 fun NavigationScreen(
     modifier: Modifier = Modifier,
-    launchPermissionNotification: PermissionState?,
+    launchPermissionNotification: PermissionState,
     noteViewModel: NoteViewModel,
     tabItemList: TabItemList,
     alarmSchedulerImpl: AlarmSchedulerImpl,

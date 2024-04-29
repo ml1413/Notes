@@ -1,23 +1,17 @@
 package com.hutapp.org.notes.hut.android
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -53,18 +47,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    var launchPermissionNotification: PermissionState?   = null
 
-                        launchPermissionNotification = rememberPermissionState(
-                            permission =
-                            android.Manifest.permission.POST_NOTIFICATIONS
-                        )
+                    val launchPermissionNotification = rememberPermissionState(
+                        permission =
+                        android.Manifest.permission.POST_NOTIFICATIONS
+                    )
 
                     SideEffect {
-                            if (!launchPermissionNotification.status.isGranted) {
-                                launchPermissionNotification.launchPermissionRequest()
-                            }
+                        if (!launchPermissionNotification.status.isGranted) {
+                            launchPermissionNotification.launchPermissionRequest()
                         }
+                    }
                     MainScreen(launchPermissionNotification = launchPermissionNotification)
                 }
             }
@@ -76,7 +69,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    launchPermissionNotification: PermissionState?
+    launchPermissionNotification: PermissionState
 ) {
     val drawerItemStateViewModel: DrawerItemStateViewModel = viewModel()
     val tabRowCurrentItemViewModel: TabRowCurrentItemViewModel = viewModel()
@@ -86,7 +79,7 @@ fun MainScreen(
     val tabItemList: TabItemList = TabItemList(context = context)
     val alarmSchedulerImpl = AlarmSchedulerImpl(context = context)
     NavigationScreen(
-        launchPermissionNotification=launchPermissionNotification,
+        launchPermissionNotification = launchPermissionNotification,
         noteViewModel = noteViewModel,
         tabItemList = tabItemList,
         alarmSchedulerImpl = alarmSchedulerImpl,

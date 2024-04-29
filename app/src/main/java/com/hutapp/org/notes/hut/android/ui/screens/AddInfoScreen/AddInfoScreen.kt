@@ -55,7 +55,7 @@ import java.time.ZoneId
 fun AddInfoScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
-    launchPermissionNotification: PermissionState?,
+    launchPermissionNotification: PermissionState,
     alarmSchedulerImpl: AlarmSchedulerImpl,
     noteViewModel: NoteViewModel,
     tabRowCurrentItemViewModel: TabRowCurrentItemViewModel,
