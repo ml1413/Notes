@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +40,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var analytics: FirebaseAnalytics
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,17 +54,16 @@ class MainActivity : ComponentActivity() {
                 ) {
                     var launchPermissionNotification: PermissionState?   = null
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         launchPermissionNotification = rememberPermissionState(
                             permission =
                             android.Manifest.permission.POST_NOTIFICATIONS
                         )
-                        SideEffect {
+
+                    SideEffect {
                             if (!launchPermissionNotification.status.isGranted) {
                                 launchPermissionNotification.launchPermissionRequest()
                             }
                         }
-                    }
                     MainScreen(launchPermissionNotification = launchPermissionNotification)
                 }
             }

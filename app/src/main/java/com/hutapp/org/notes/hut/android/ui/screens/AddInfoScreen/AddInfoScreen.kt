@@ -141,6 +141,7 @@ fun AddInfoScreen(
             )
 
             if (currentLabelScreen == reminderScreenLabel) {
+
                 launchPermissionNotification?.let { permissionState ->
                     if (permissionState.status.isGranted) {
                         isShowAlertPikerDate.value = true
