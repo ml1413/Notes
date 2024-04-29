@@ -11,6 +11,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.DrawerItemStateViewModel
@@ -27,10 +29,11 @@ import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.MyTopBar
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabItemList
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalPermissionsApi::class)
 @Composable
 fun NavigationScreen(
     modifier: Modifier = Modifier,
+    launchPermissionNotification: PermissionState?,
     noteViewModel: NoteViewModel,
     tabItemList: TabItemList,
     alarmSchedulerImpl: AlarmSchedulerImpl,
@@ -133,6 +136,7 @@ fun NavigationScreen(
                         addScreenContent = {
                             AddInfoScreen(
                                 tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
+                                launchPermissionNotification=launchPermissionNotification,
                                 alarmSchedulerImpl = alarmSchedulerImpl,
                                 paddingValues = paddingValues,
                                 noteViewModel = noteViewModel,

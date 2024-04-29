@@ -3,7 +3,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id ("com.google.devtools.ksp")
+    id("com.google.devtools.ksp")
     id("com.google.gms.google-services")
 
 
@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "com.hutapp.org.notes.hut.android"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.04"
@@ -66,11 +66,11 @@ dependencies {
 
     //localData.now()
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
-    implementation ("com.maxkeppeler.sheets-compose-dialogs:core:1.0.2")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.0.2")
     // CALENDAR
-    implementation ("com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2")
     // CLOCK
-    implementation ("com.maxkeppeler.sheets-compose-dialogs:clock:1.0.2")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:clock:1.0.2")
 
     // runtime-livedata
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
@@ -83,12 +83,16 @@ dependencies {
     // navigation-compose
     implementation("androidx.navigation:navigation-compose:2.7.6")
     //Room
-    implementation ("androidx.room:room-ktx:2.5.0")
-    annotationProcessor ("androidx.room:room-compiler:2.5.0")
-    ksp ("androidx.room:room-compiler:2.5.0")
+    implementation("androidx.room:room-ktx:2.5.0")
+    annotationProcessor("androidx.room:room-compiler:2.5.0")
+    ksp("androidx.room:room-compiler:2.5.0")
     //Hilt
     implementation("com.google.dagger:hilt-android:2.47")
     kapt("com.google.dagger:hilt-compiler:2.47")
+
+    //accompanist-permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+
 
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")

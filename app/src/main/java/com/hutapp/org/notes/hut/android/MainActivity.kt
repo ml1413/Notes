@@ -1,16 +1,27 @@
 package com.hutapp.org.notes.hut.android
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -27,6 +38,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var analytics: FirebaseAnalytics
+
+    @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         analytics = Firebase.analytics
@@ -37,15 +50,32 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    var launchPermissionNotification: PermissionState?   = null
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        launchPermissionNotification = rememberPermissionState(
+                            permission =
+                            android.Manifest.permission.POST_NOTIFICATIONS
+                        )
+                        SideEffect {
+                            if (!launchPermissionNotification.status.isGranted) {
+                                launchPermissionNotification.launchPermissionRequest()
+                            }
+                        }
+                    }
+                    MainScreen(launchPermissionNotification = launchPermissionNotification)
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    launchPermissionNotification: PermissionState?
+) {
     val drawerItemStateViewModel: DrawerItemStateViewModel = viewModel()
     val tabRowCurrentItemViewModel: TabRowCurrentItemViewModel = viewModel()
     val currentScreenViewModel: CurrentScreenViewModel = viewModel()
@@ -54,9 +84,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val tabItemList: TabItemList = TabItemList(context = context)
     val alarmSchedulerImpl = AlarmSchedulerImpl(context = context)
     NavigationScreen(
+        launchPermissionNotification=launchPermissionNotification,
         noteViewModel = noteViewModel,
         tabItemList = tabItemList,
-        alarmSchedulerImpl = alarmSchedulerImpl ,
+        alarmSchedulerImpl = alarmSchedulerImpl,
         tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
         drawerItemStateViewModel = drawerItemStateViewModel,
         currentScreenViewModel = currentScreenViewModel

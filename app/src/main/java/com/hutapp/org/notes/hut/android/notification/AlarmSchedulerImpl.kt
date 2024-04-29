@@ -40,7 +40,7 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
         context,
         itemId,
         intent,
-        PendingIntent.FLAG_UPDATE_CURRENT
+        PendingIntent.FLAG_IMMUTABLE
     )
 
 }
