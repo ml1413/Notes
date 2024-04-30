@@ -5,12 +5,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.hutapp.org.notes.hut.android.ui.navigation.Screens
 
 @Composable
 fun MyFAB(
@@ -24,7 +24,8 @@ fun MyFAB(
     ) {
         FloatingActionButton(
             modifier = modifier.padding(16.dp),
-            onClick = onFABClisk
+            onClick = onFABClisk,
+            containerColor = MaterialTheme.colorScheme.primary
         ) {
             Icon(
                 imageVector = iconForFAB, contentDescription = null

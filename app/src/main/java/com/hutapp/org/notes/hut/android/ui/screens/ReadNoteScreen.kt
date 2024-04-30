@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -50,6 +51,7 @@ fun ReadNoteScreen(
                 fontWeight = FontWeight.Bold,
                 maxLines = 1
             )
+            Divider(thickness = 1.dp)
             Text(
                 modifier = modifier
                     .fillMaxSize()
@@ -71,7 +73,7 @@ fun ReadNoteScreen(
             val noteForDeleteInTrash = noteEntity.copy(isDelete = true)
             noteViewModel.updateNote(noteEntity = noteForDeleteInTrash)
             // cancel notification
-            noteForDeleteInTrash.id?.let { noteId->
+            noteForDeleteInTrash.id?.let { noteId ->
                 alarmSchedulerImpl.cancel(itemId = noteId)
             }
             onFABClickListener()
