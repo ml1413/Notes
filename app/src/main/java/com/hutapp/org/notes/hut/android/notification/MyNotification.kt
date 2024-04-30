@@ -5,12 +5,14 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.hutapp.org.notes.hut.android.MainActivity
 import com.hutapp.org.notes.hut.android.R
 
 const val NOTIFICATION_CHANEL_ID = "my chanel"
 const val NOTIFICATION_NAME = "my notification"
+const val ID_ENTITY = "id entity"
 
 class MyNotification(private val context: Context) {
     private val manager =
@@ -26,8 +28,14 @@ class MyNotification(private val context: Context) {
         manager.createNotificationChannel(chanel)
 
         val intent = Intent(context, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.putExtra(ID_ENTITY, idNotification)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANEL_ID)
             .setContentTitle(labelNotification)

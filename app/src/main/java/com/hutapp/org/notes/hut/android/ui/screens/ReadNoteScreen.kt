@@ -1,6 +1,7 @@
 package com.hutapp.org.notes.hut.android.ui.screens
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,6 +32,7 @@ fun ReadNoteScreen(
     noteEntityId: Int,
     onFABClickListener: () -> Unit = {}
 ) {
+
     val context = LocalContext.current
     Box(
         modifier = modifier

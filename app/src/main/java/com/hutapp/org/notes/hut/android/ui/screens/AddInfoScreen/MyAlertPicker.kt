@@ -59,7 +59,7 @@ fun MyAlertPicker(
         key2 = timePickerState.hour,
         key3 = localDateState.value
     ) {
-        isError.value = System.currentTimeMillis() >= getMilesFromDate(
+        isError.value = System.currentTimeMillis() + 1000 >= getMilesFromDate(
             year = localDateState.value.year,
             dayOfYear = localDateState.value.dayOfYear,
             hourOfDay = timePickerState.hour,

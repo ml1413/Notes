@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -23,6 +24,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
+import com.hutapp.org.notes.hut.android.notification.ID_ENTITY
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.DrawerItemStateViewModel
 import com.hutapp.org.notes.hut.android.ui.navigation.NavigationScreen
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
@@ -34,6 +36,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var analytics: FirebaseAnalytics
+    private var idEntity: Int? = null
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @OptIn(ExperimentalPermissionsApi::class)
@@ -42,24 +45,38 @@ class MainActivity : ComponentActivity() {
         analytics = Firebase.analytics
         installSplashScreen()
         setContent {
-
+            // get id from notification_____________________________________________________________
+            intent?.let {
+                idEntity = it.getIntExtra(ID_ENTITY, 0).let { extraFromIntent ->
+                    it.removeExtra(ID_ENTITY)
+                    // close notification
+//                    NotificationManagerCompat.from(this).cancel(extraFromIntent)
+                    // clear extra intent
+                    if (extraFromIntent > 0) extraFromIntent else null
+                }
+            }
+            //______________________________________________________________________________________
             NotesHutAndroidTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
 
+                    // request permission on start ________________________________________________
                     val launchPermissionNotification = rememberPermissionState(
                         permission =
                         android.Manifest.permission.POST_NOTIFICATIONS
                     )
-
                     SideEffect {
                         if (!launchPermissionNotification.status.isGranted) {
                             launchPermissionNotification.launchPermissionRequest()
                         }
                     }
-                    MainScreen(launchPermissionNotification = launchPermissionNotification)
+                    //______________________________________________________________________________
+                    MainScreen(
+                        idEntity = idEntity,
+                        launchPermissionNotification = launchPermissionNotification
+                    )
                 }
             }
         }
@@ -70,6 +87,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MainScreen(
         modifier: Modifier = Modifier,
+        idEntity: Int?,
         launchPermissionNotification: PermissionState
     ) {
         val drawerItemStateViewModel: DrawerItemStateViewModel = viewModel()
@@ -80,6 +98,7 @@ class MainActivity : ComponentActivity() {
         val tabItemList: TabItemList = TabItemList(context = context)
         val alarmSchedulerImpl = AlarmSchedulerImpl(context = context)
         NavigationScreen(
+            idEntity = idEntity,
             launchPermissionNotification = launchPermissionNotification,
             noteViewModel = noteViewModel,
             tabItemList = tabItemList,

@@ -1,6 +1,5 @@
 package com.hutapp.org.notes.hut.android.ui.navigation
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
@@ -33,6 +32,7 @@ import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 @Composable
 fun NavigationScreen(
     modifier: Modifier = Modifier,
+    idEntity: Int?,
     launchPermissionNotification: PermissionState,
     noteViewModel: NoteViewModel,
     tabItemList: TabItemList,
@@ -44,6 +44,23 @@ fun NavigationScreen(
     val navHostController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+    // open scree for read note if press on notification ___________________________________________
+
+    idEntity?.let { id ->
+        val owner = LocalLifecycleOwner.current
+        noteViewModel.noteList.observe(owner) {
+            val noteEntity = noteViewModel.noteList.value?.firstOrNull { noteEntity ->
+                noteEntity.id == id
+            }
+            noteEntity?.let {
+
+                navHostController.navigate(Screens.ReadNoteScreen.getRouteWithArgs(noteEntity = it))
+            }
+        }
+    }
+
+    //______________________________________________________________________________________________
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -136,7 +153,7 @@ fun NavigationScreen(
                         addScreenContent = {
                             AddInfoScreen(
                                 tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
-                                launchPermissionNotification=launchPermissionNotification,
+                                launchPermissionNotification = launchPermissionNotification,
                                 alarmSchedulerImpl = alarmSchedulerImpl,
                                 paddingValues = paddingValues,
                                 noteViewModel = noteViewModel,

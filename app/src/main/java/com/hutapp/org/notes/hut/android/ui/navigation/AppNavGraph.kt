@@ -1,6 +1,8 @@
 package com.hutapp.org.notes.hut.android.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,7 +17,7 @@ fun AppNavGraph(
     trashScreenContent: @Composable () -> Unit,
     addScreenContent: @Composable () -> Unit,
     readScreenContent: @Composable (Int) -> Unit,
-    calendarScreen:@Composable ()->Unit
+    calendarScreen:@Composable ()->Unit,
 ) {
     NavHost(navController = navHostController,
         startDestination = Screens.AllNotesScreen.route,

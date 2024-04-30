@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.provider.Settings
 import android.view.WindowManager
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -24,7 +20,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -34,8 +29,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -141,13 +134,12 @@ fun AddInfoScreen(
             )
 
             if (currentLabelScreen == reminderScreenLabel) {
-
-                launchPermissionNotification?.let { permissionState ->
-                    if (permissionState.status.isGranted) {
-                        isShowAlertPikerDate.value = true
-                    } else {
-                        isShowAlertPermission.value = true
-                    }
+                // request permission notification ___________________________________________________
+                if (!launchPermissionNotification.status.isGranted) {
+                    isShowAlertPermission.value = true
+                    //__________________________________________________________________________
+                } else {
+                    isShowAlertPikerDate.value = true
                 }
             } else {
                 noteEntityForSave.value?.let { noteEntity ->
