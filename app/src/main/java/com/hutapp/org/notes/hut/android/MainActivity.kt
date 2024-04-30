@@ -43,34 +43,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         setContent {
 
-            /**____________________________________________________________________________________*/
-//            val test = remember { mutableStateOf("") }
-//            TextField(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .onKeyEvent {
-//                        if (it.key == Key.Enter) {
-//                            Log.d("TAG1", "text: ${test.value}  ")
-//                            true
-//                        } else {
-//                            false
-//                        }
-//
-//                    },
-//                keyboardOptions = KeyboardOptions(
-//                    imeAction = ImeAction.Default
-//                ),
-//                keyboardActions = KeyboardActions(onDone = {
-//
-//                }),
-//                value = test.value,
-//                onValueChange = {
-//                    test.value = it
-//                }
-//            )
-//
-//        }
-            /**____________________________________________________________________________________*/
             NotesHutAndroidTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
