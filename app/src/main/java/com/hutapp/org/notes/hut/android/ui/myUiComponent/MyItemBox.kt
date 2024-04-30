@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,7 +42,6 @@ fun MyItemBox(
     onItemClickListener: (NoteEntity) -> Unit = {},
     onIconButtonClickListener: () -> Unit = {}
 ) {
-    val color = MaterialTheme.colorScheme.primary
     val shape = RoundedCornerShape(16.dp)
     Card(
         modifier = modifier
@@ -48,8 +49,8 @@ fun MyItemBox(
             .padding(horizontal = 16.dp)
             .padding(bottom = 8.dp)
             .clickable { onItemClickListener(noteEntity) },
-        elevation = CardDefaults.elevatedCardElevation(2.dp),
-        colors = CardDefaults.cardColors(color),
+        elevation = CardDefaults.elevatedCardElevation(8.dp),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer),
         shape = shape
     ) {
         Box(
@@ -61,7 +62,6 @@ fun MyItemBox(
             Column(
                 modifier = modifier
                     .fillMaxWidth()
-                    .border(1.dp, shape = shape, color = color)
             ) {
                 Box(
                     modifier = modifier.fillMaxWidth(),
@@ -91,7 +91,6 @@ fun MyItemBox(
                     Text(
                         modifier =
                         modifier.padding(8.dp),
-                        color = color,
                         maxLines = 1,
                         text = maxLengthString(string = noteEntity.message, maxLength = 15)
                     )
@@ -112,13 +111,14 @@ fun MyItemBox(
                                     color = MaterialTheme.colorScheme.background,
                                     shape = CircleShape
                                 )
-                                .background(MaterialTheme.colorScheme.primary),
+                                .background(MaterialTheme.colorScheme.background),
                             onClick = { onIconButtonClickListener() }) {
                             Icon(
                                 imageVector = when (screen) {
                                     Screens.TrashScreen -> Icons.Default.Delete
                                     else -> Icons.Default.Warning
                                 },
+                                tint = MaterialTheme.colorScheme.primary,
                                 contentDescription = null
                             )
 

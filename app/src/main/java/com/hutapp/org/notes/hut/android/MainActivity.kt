@@ -42,6 +42,35 @@ class MainActivity : ComponentActivity() {
         analytics = Firebase.analytics
         installSplashScreen()
         setContent {
+
+            /**____________________________________________________________________________________*/
+//            val test = remember { mutableStateOf("") }
+//            TextField(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .onKeyEvent {
+//                        if (it.key == Key.Enter) {
+//                            Log.d("TAG1", "text: ${test.value}  ")
+//                            true
+//                        } else {
+//                            false
+//                        }
+//
+//                    },
+//                keyboardOptions = KeyboardOptions(
+//                    imeAction = ImeAction.Default
+//                ),
+//                keyboardActions = KeyboardActions(onDone = {
+//
+//                }),
+//                value = test.value,
+//                onValueChange = {
+//                    test.value = it
+//                }
+//            )
+//
+//        }
+            /**____________________________________________________________________________________*/
             NotesHutAndroidTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -63,29 +92,30 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun MainScreen(
-    modifier: Modifier = Modifier,
-    launchPermissionNotification: PermissionState
-) {
-    val drawerItemStateViewModel: DrawerItemStateViewModel = viewModel()
-    val tabRowCurrentItemViewModel: TabRowCurrentItemViewModel = viewModel()
-    val currentScreenViewModel: CurrentScreenViewModel = viewModel()
-    val noteViewModel: NoteViewModel = viewModel()
-    val context = LocalContext.current
-    val tabItemList: TabItemList = TabItemList(context = context)
-    val alarmSchedulerImpl = AlarmSchedulerImpl(context = context)
-    NavigationScreen(
-        launchPermissionNotification = launchPermissionNotification,
-        noteViewModel = noteViewModel,
-        tabItemList = tabItemList,
-        alarmSchedulerImpl = alarmSchedulerImpl,
-        tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
-        drawerItemStateViewModel = drawerItemStateViewModel,
-        currentScreenViewModel = currentScreenViewModel
-    )
 
+    @OptIn(ExperimentalPermissionsApi::class)
+    @Composable
+    fun MainScreen(
+        modifier: Modifier = Modifier,
+        launchPermissionNotification: PermissionState
+    ) {
+        val drawerItemStateViewModel: DrawerItemStateViewModel = viewModel()
+        val tabRowCurrentItemViewModel: TabRowCurrentItemViewModel = viewModel()
+        val currentScreenViewModel: CurrentScreenViewModel = viewModel()
+        val noteViewModel: NoteViewModel = viewModel()
+        val context = LocalContext.current
+        val tabItemList: TabItemList = TabItemList(context = context)
+        val alarmSchedulerImpl = AlarmSchedulerImpl(context = context)
+        NavigationScreen(
+            launchPermissionNotification = launchPermissionNotification,
+            noteViewModel = noteViewModel,
+            tabItemList = tabItemList,
+            alarmSchedulerImpl = alarmSchedulerImpl,
+            tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
+            drawerItemStateViewModel = drawerItemStateViewModel,
+            currentScreenViewModel = currentScreenViewModel
+        )
+
+    }
 }
