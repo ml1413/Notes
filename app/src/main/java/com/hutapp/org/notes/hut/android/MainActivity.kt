@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 idEntity = it.getIntExtra(ID_ENTITY, 0).let { extraFromIntent ->
                     it.removeExtra(ID_ENTITY)
                     // close notification
-//                    NotificationManagerCompat.from(this).cancel(extraFromIntent)
+                    NotificationManagerCompat.from(this).cancel(extraFromIntent)
                     // clear extra intent
                     if (extraFromIntent > 0) extraFromIntent else null
                 }

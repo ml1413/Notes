@@ -1,5 +1,6 @@
 package com.hutapp.org.notes.hut.android.ui.myUiComponent
 
+import android.util.Log
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.PaddingValues
@@ -46,6 +47,7 @@ fun MyLazyForItemNotes(
         items(filterList) { noteEntity ->
             // show item from notification__________________________________________________________
             idEntity2(true)?.let { id ->
+                Log.d("TAG1", "MyLazyForItemNotes: id $id  noteEntity ${noteEntity.id} ")
                 if (noteEntity.id == id) {
                     coroutineScope.launch {
                         delay(600)
