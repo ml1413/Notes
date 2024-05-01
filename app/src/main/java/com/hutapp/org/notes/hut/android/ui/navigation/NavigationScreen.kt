@@ -8,7 +8,6 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -33,6 +32,7 @@ import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 fun NavigationScreen(
     modifier: Modifier = Modifier,
     idEntity: Int?,
+    idEntity2:(Boolean)->Int?,
     launchPermissionNotification: PermissionState,
     noteViewModel: NoteViewModel,
     tabItemList: TabItemList,
@@ -46,21 +46,21 @@ fun NavigationScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     // open scree for read note if press on notification ___________________________________________
 
-    idEntity?.let { id ->
-        val owner = LocalLifecycleOwner.current
-        noteViewModel.noteList.observe(owner) {
-            val noteEntity = noteViewModel.noteList.value?.firstOrNull { noteEntity ->
-                noteEntity.id == id
-            }
-            noteEntity?.let {
-
-                navHostController.navigate(Screens.ReadNoteScreen.getRouteWithArgs(noteEntity = it))
-            }
-        }
-    }
+//    idEntity?.let { id ->
+//        val owner = LocalLifecycleOwner.current
+//        noteViewModel.noteList.observe(owner) {
+//            val noteEntity = noteViewModel.noteList.value?.firstOrNull { noteEntity ->
+//                noteEntity.id == id
+//            }
+//            noteEntity?.let {
+//
+//                navHostController.navigate(Screens.ReadNoteScreen.getRouteWithArgs(noteEntity = it))
+//            }
+//        }
+//    }
 
     //______________________________________________________________________________________________
-
+    var iss = true
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -112,9 +112,13 @@ fun NavigationScreen(
 
                                     NoteLazyScreen(
                                         index = index,
+                                        idEntity = idEntity,
                                         tabItemList = tabItemList,
+                                        idEntity2 = idEntity2,
                                         currentScreenViewModel = currentScreenViewModel,
                                         noteViewModel = noteViewModel,
+                                        iss = iss,
+                                        setIss = { iss = it },
                                         isShowDeleteInTrashItem = false,
                                         onItemClickListener = { noteEntity ->
                                             navHostController.navigate(
@@ -123,7 +127,6 @@ fun NavigationScreen(
                                                 )
                                             )
                                         })
-
                                 },
                                 onFABClickListener = {
                                     navHostController.navigate(Screens.AddScreen.route)

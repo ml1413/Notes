@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -75,6 +74,10 @@ class MainActivity : ComponentActivity() {
                     //______________________________________________________________________________
                     MainScreen(
                         idEntity = idEntity,
+                        idEntity2 = {
+                            if (!it) idEntity = null
+                            return@MainScreen idEntity
+                        },
                         launchPermissionNotification = launchPermissionNotification
                     )
                 }
@@ -88,6 +91,7 @@ class MainActivity : ComponentActivity() {
     fun MainScreen(
         modifier: Modifier = Modifier,
         idEntity: Int?,
+        idEntity2: (Boolean) -> Int?,
         launchPermissionNotification: PermissionState
     ) {
         val drawerItemStateViewModel: DrawerItemStateViewModel = viewModel()
@@ -99,6 +103,7 @@ class MainActivity : ComponentActivity() {
         val alarmSchedulerImpl = AlarmSchedulerImpl(context = context)
         NavigationScreen(
             idEntity = idEntity,
+            idEntity2 = idEntity2,
             launchPermissionNotification = launchPermissionNotification,
             noteViewModel = noteViewModel,
             tabItemList = tabItemList,
