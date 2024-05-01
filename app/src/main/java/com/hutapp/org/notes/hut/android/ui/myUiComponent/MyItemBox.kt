@@ -3,15 +3,18 @@ package com.hutapp.org.notes.hut.android.ui.myUiComponent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -35,12 +38,15 @@ import java.time.ZoneId
 @Composable
 fun MyItemBox(
     modifier: Modifier = Modifier,
+    idEntity2: (Boolean) -> Int? = { null },
     currentScreenViewModel: CurrentScreenViewModel,
     noteEntity: NoteEntity,
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
     onItemClickListener: (NoteEntity) -> Unit = {},
     onIconButtonClickListener: () -> Unit = {}
 ) {
     val shape = RoundedCornerShape(16.dp)
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -54,7 +60,18 @@ fun MyItemBox(
             modifier =
             modifier
                 .fillMaxWidth()
-                .clickable { onItemClickListener(noteEntity) },
+                .clickable(
+                    interactionSource =
+                    if (idEntity2(true) == noteEntity.id) {
+                        idEntity2(false)
+                        interactionSource
+                    } else {
+                        MutableInteractionSource()
+                    },
+                    indication = rememberRipple(
+                        bounded = true
+                    )
+                ) { onItemClickListener(noteEntity) },
             contentAlignment = Alignment.CenterEnd
         ) {
 
@@ -141,6 +158,8 @@ private fun Preview(
     onIconButtonClickListener: () -> Unit = {},
     currentScreenViewModel: CurrentScreenViewModel = viewModel(),
 ) {
+    val scrollState = rememberLazyListState()
+
     val noteEntity = NoteEntity(
         id = 1,
         labelNote = "labelNote",
@@ -149,5 +168,8 @@ private fun Preview(
         message = "basdfdsfdsf  sdfsdf fd s",
         addNoteDate = LocalDate.now(ZoneId.systemDefault()).toString()
     )
-    MyItemBox(currentScreenViewModel = currentScreenViewModel, noteEntity = noteEntity)
+    MyItemBox(
+        currentScreenViewModel = currentScreenViewModel, noteEntity = noteEntity,
+        interactionSource = MutableInteractionSource()
+    )
 }

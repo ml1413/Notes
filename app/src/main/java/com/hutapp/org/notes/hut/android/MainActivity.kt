@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -55,11 +56,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
             //______________________________________________________________________________________
+
             NotesHutAndroidTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
 
                     // request permission on start ________________________________________________
                     val launchPermissionNotification = rememberPermissionState(
@@ -73,7 +76,6 @@ class MainActivity : ComponentActivity() {
                     }
                     //______________________________________________________________________________
                     MainScreen(
-                        idEntity = idEntity,
                         idEntity2 = {
                             if (!it) idEntity = null
                             return@MainScreen idEntity
@@ -84,34 +86,32 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
 
 
-    @OptIn(ExperimentalPermissionsApi::class)
-    @Composable
-    fun MainScreen(
-        modifier: Modifier = Modifier,
-        idEntity: Int?,
-        idEntity2: (Boolean) -> Int?,
-        launchPermissionNotification: PermissionState
-    ) {
-        val drawerItemStateViewModel: DrawerItemStateViewModel = viewModel()
-        val tabRowCurrentItemViewModel: TabRowCurrentItemViewModel = viewModel()
-        val currentScreenViewModel: CurrentScreenViewModel = viewModel()
-        val noteViewModel: NoteViewModel = viewModel()
-        val context = LocalContext.current
-        val tabItemList: TabItemList = TabItemList(context = context)
-        val alarmSchedulerImpl = AlarmSchedulerImpl(context = context)
-        NavigationScreen(
-            idEntity = idEntity,
-            idEntity2 = idEntity2,
-            launchPermissionNotification = launchPermissionNotification,
-            noteViewModel = noteViewModel,
-            tabItemList = tabItemList,
-            alarmSchedulerImpl = alarmSchedulerImpl,
-            tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
-            drawerItemStateViewModel = drawerItemStateViewModel,
-            currentScreenViewModel = currentScreenViewModel
-        )
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    idEntity2: (Boolean) -> Int?,
+    launchPermissionNotification: PermissionState
+) {
+    val drawerItemStateViewModel: DrawerItemStateViewModel = viewModel()
+    val tabRowCurrentItemViewModel: TabRowCurrentItemViewModel = viewModel()
+    val currentScreenViewModel: CurrentScreenViewModel = viewModel()
+    val noteViewModel: NoteViewModel = viewModel()
+    val context = LocalContext.current
+    val tabItemList: TabItemList = TabItemList(context = context)
+    val alarmSchedulerImpl = AlarmSchedulerImpl(context = context)
+    NavigationScreen(
+        idEntity2 = idEntity2,
+        launchPermissionNotification = launchPermissionNotification,
+        noteViewModel = noteViewModel,
+        tabItemList = tabItemList,
+        alarmSchedulerImpl = alarmSchedulerImpl,
+        tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,
+        drawerItemStateViewModel = drawerItemStateViewModel,
+        currentScreenViewModel = currentScreenViewModel
+    )
 
-    }
 }

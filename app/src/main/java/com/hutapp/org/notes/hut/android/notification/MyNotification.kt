@@ -34,7 +34,7 @@ class MyNotification(private val context: Context) {
             context,
             0,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_MUTABLE
         )
 
         val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANEL_ID)

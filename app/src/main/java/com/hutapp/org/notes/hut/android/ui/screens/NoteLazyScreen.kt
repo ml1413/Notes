@@ -8,20 +8,19 @@ import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyLazyForItemNotes
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabItemList
+import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun NoteLazyScreen(
     modifier: Modifier = Modifier,
-    idEntity: Int?,
     index: Int,
+    coroutineScope: CoroutineScope,
     idEntity2: (Boolean) -> Int?,
-    iss: Boolean,
     tabItemList: TabItemList,
     currentScreenViewModel: CurrentScreenViewModel,
     isShowDeleteInTrashItem: Boolean,
     noteViewModel: NoteViewModel,
     onItemClickListener: (NoteEntity) -> Unit,
-    setIss: (Boolean) -> Unit
 ) {
     val listEntity = noteViewModel.noteList.observeAsState()
     val labelScreen = tabItemList.listItem[index]
@@ -31,16 +30,10 @@ fun NoteLazyScreen(
         val filterList = oldListEntity.filter {
             it.labelNoteScreen == labelScreen.title && it.isDelete == isShowDeleteInTrashItem
         }
-        idEntity2(true)?.let { id ->
-
-            val entity = filterList.first {
-                it.id == id
-            }
-            onItemClickListener(entity)
-            idEntity2(false)
-        }
 
         MyLazyForItemNotes(
+            idEntity2 = idEntity2,
+            coroutineScope = coroutineScope,
             filterList = filterList,
             onItemClickListener = onItemClickListener,
             currentScreenViewModel = currentScreenViewModel,

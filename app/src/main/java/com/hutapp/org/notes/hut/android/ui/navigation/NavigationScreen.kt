@@ -31,7 +31,6 @@ import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 @Composable
 fun NavigationScreen(
     modifier: Modifier = Modifier,
-    idEntity: Int?,
     idEntity2:(Boolean)->Int?,
     launchPermissionNotification: PermissionState,
     noteViewModel: NoteViewModel,
@@ -44,23 +43,7 @@ fun NavigationScreen(
     val navHostController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    // open scree for read note if press on notification ___________________________________________
 
-//    idEntity?.let { id ->
-//        val owner = LocalLifecycleOwner.current
-//        noteViewModel.noteList.observe(owner) {
-//            val noteEntity = noteViewModel.noteList.value?.firstOrNull { noteEntity ->
-//                noteEntity.id == id
-//            }
-//            noteEntity?.let {
-//
-//                navHostController.navigate(Screens.ReadNoteScreen.getRouteWithArgs(noteEntity = it))
-//            }
-//        }
-//    }
-
-    //______________________________________________________________________________________________
-    var iss = true
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -103,6 +86,7 @@ fun NavigationScreen(
                             currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
                             MyTabRowScreen(
                                 paddingValues = paddingValues,
+                                idEntity2 = idEntity2,
                                 coroutineScope = coroutineScope,
                                 tabItemList = tabItemList,
                                 onCurrentPageListener = { currentPage ->
@@ -112,13 +96,11 @@ fun NavigationScreen(
 
                                     NoteLazyScreen(
                                         index = index,
-                                        idEntity = idEntity,
                                         tabItemList = tabItemList,
+                                        coroutineScope = coroutineScope,
                                         idEntity2 = idEntity2,
                                         currentScreenViewModel = currentScreenViewModel,
                                         noteViewModel = noteViewModel,
-                                        iss = iss,
-                                        setIss = { iss = it },
                                         isShowDeleteInTrashItem = false,
                                         onItemClickListener = { noteEntity ->
                                             navHostController.navigate(
