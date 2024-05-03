@@ -1,6 +1,5 @@
 package com.hutapp.org.notes.hut.android.db
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -22,6 +21,10 @@ class NoteViewModel @Inject constructor(
     }
 
     init {
+        updateCurrentViewModel()
+    }
+
+    fun updateCurrentViewModel() {
         repositoryBD.getAll().observeForever(observer)
     }
 

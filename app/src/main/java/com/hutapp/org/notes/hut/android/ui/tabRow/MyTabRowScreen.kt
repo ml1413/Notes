@@ -22,9 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.hutapp.org.notes.hut.android.R
-import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
+import com.hutapp.org.notes.hut.android.ui.myComponent.MyFAB
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable

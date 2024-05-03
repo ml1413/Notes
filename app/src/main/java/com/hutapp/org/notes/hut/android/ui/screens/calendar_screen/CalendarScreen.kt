@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
-import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyItemBox
+import com.hutapp.org.notes.hut.android.ui.myComponent.MyItemBox
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
 
 @Composable

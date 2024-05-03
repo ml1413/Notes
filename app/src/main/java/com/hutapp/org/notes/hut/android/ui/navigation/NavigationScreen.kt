@@ -1,5 +1,7 @@
 package com.hutapp.org.notes.hut.android.ui.navigation
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
@@ -8,6 +10,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -17,9 +20,10 @@ import com.hutapp.org.notes.hut.android.ui.drawerSheet.DrawerItemStateViewModel
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.MyDrawerSheet
 import com.hutapp.org.notes.hut.android.ui.screens.AddInfoScreen.AddInfoScreen
 import com.hutapp.org.notes.hut.android.ui.screens.NoteLazyScreen
-import com.hutapp.org.notes.hut.android.ui.screens.ReadNoteScreen
 import com.hutapp.org.notes.hut.android.ui.screens.SettingsScreen
 import com.hutapp.org.notes.hut.android.ui.screens.calendar_screen.CalendarScreen
+import com.hutapp.org.notes.hut.android.ui.screens.readNoteScreen.ReadNoteScreen
+import com.hutapp.org.notes.hut.android.ui.screens.readNoteScreen.ReadNoteViewModel
 import com.hutapp.org.notes.hut.android.ui.screens.trash_screen.TrashScreen
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTabRowScreen
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
@@ -31,7 +35,8 @@ import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 @Composable
 fun NavigationScreen(
     modifier: Modifier = Modifier,
-    idEntity2:(Boolean)->Int?,
+    idEntity2: (Boolean) -> Int?,
+    context: Context,
     launchPermissionNotification: PermissionState,
     noteViewModel: NoteViewModel,
     tabItemList: TabItemList,
@@ -40,6 +45,7 @@ fun NavigationScreen(
     drawerItemStateViewModel: DrawerItemStateViewModel,
     currentScreenViewModel: CurrentScreenViewModel,
 ) {
+    val readNoteViewModel: ReadNoteViewModel = viewModel()
     val navHostController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -53,7 +59,7 @@ fun NavigationScreen(
                 coroutineScope = coroutineScope,
                 drawerState = drawerState,
                 onItemDrawMenuListener = { screen ->
-                    currentScreenViewModel.setTitleScreen(screen = screen)
+                    currentScreenViewModel.setScreen(screen = screen)
                     navHostController.navigate(screen.route) {
                         popUpTo(Screens.AllNotesScreen.route)
                         launchSingleTop = true
@@ -68,13 +74,22 @@ fun NavigationScreen(
                         drawerState = drawerState,
                         currentScreenViewModel = currentScreenViewModel,
                         onBackButtonClickListener = {
-                            currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
+                            currentScreenViewModel.setScreen(screen = Screens.AllNotesScreen)
                             navHostController.popBackStack()
-                        }, onCalendarClickListener = {
-                            currentScreenViewModel.setTitleScreen(screen = Screens.CalendarScreen)
+                        },
+                        onCalendarClickListener = {
+                            currentScreenViewModel.setScreen(screen = Screens.CalendarScreen)
                             navHostController.navigate(Screens.CalendarScreen.route) {
                                 popUpTo(Screens.AllNotesScreen.route)
                                 launchSingleTop = true
+                            }
+                        },
+                        onSharedClickListener = {
+                            readNoteViewModel.noteEntity.value?.apply {
+                                val intent = Intent(Intent.ACTION_SEND)
+                                intent.setType("text/plain")
+                                intent.putExtra(Intent.EXTRA_TEXT,message)
+                                context.startActivity(intent)
                             }
                         }
                     )
@@ -83,7 +98,7 @@ fun NavigationScreen(
                     AppNavGraph(
                         navHostController = navHostController,
                         allNotesScreensContent = {
-                            currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
+                            currentScreenViewModel.setScreen(screen = Screens.AllNotesScreen)
                             MyTabRowScreen(
                                 paddingValues = paddingValues,
                                 idEntity2 = idEntity2,
@@ -103,6 +118,8 @@ fun NavigationScreen(
                                         noteViewModel = noteViewModel,
                                         isShowDeleteInTrashItem = false,
                                         onItemClickListener = { noteEntity ->
+                                            readNoteViewModel.setValue(noteEntity = noteEntity)
+                                            currentScreenViewModel.setScreen(Screens.ReadNoteScreen)
                                             navHostController.navigate(
                                                 Screens.ReadNoteScreen.getRouteWithArgs(
                                                     noteEntity = noteEntity
@@ -130,7 +147,7 @@ fun NavigationScreen(
                                 isShowDeleteInTrashItem = true,
                                 onItemClickListener = {},
                                 onBackHandler = {
-                                    currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
+                                    currentScreenViewModel.setScreen(screen = Screens.AllNotesScreen)
                                     navHostController.popBackStack()
                                 }
                             )
@@ -151,8 +168,8 @@ fun NavigationScreen(
                             ReadNoteScreen(
                                 paddingValues = paddingValues,
                                 alarmSchedulerImpl = alarmSchedulerImpl,
+                                readNoteViewModel = readNoteViewModel,
                                 noteViewModel = noteViewModel,
-                                noteEntityId = noteEntityId,
                                 onFABClickListener = {
                                     navHostController.popBackStack()
                                 }
@@ -171,7 +188,7 @@ fun NavigationScreen(
                                     )
                                 },
                                 onBackListener = {
-                                    currentScreenViewModel.setTitleScreen(screen = Screens.AllNotesScreen)
+                                    currentScreenViewModel.setScreen(screen = Screens.AllNotesScreen)
                                     navHostController.popBackStack()
                                 }
                             )

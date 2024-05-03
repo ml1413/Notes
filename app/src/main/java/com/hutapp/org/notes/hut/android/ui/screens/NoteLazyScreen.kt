@@ -5,7 +5,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
-import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyLazyForItemNotes
+import com.hutapp.org.notes.hut.android.ui.myComponent.MyLazyForItemNotes
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewModel
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabItemList
 import kotlinx.coroutines.CoroutineScope

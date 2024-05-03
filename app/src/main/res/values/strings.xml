@@ -40,4 +40,5 @@
     // alert permission
     <string name="need_to_allow_notifications">Need to allow notifications</string>
     <string name="open_permission">Open Permission</string>
+    <string name="title_activity_floating">FloatingActivity</string>
 </resources>

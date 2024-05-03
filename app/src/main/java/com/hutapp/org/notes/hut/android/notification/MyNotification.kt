@@ -6,7 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import com.hutapp.org.notes.hut.android.MainActivity
+import com.hutapp.org.notes.hut.android.activity.MainActivity
 import com.hutapp.org.notes.hut.android.R
 
 const val NOTIFICATION_CHANEL_ID = "my chanel"

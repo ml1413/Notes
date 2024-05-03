@@ -9,7 +9,7 @@ class CurrentScreenViewModel : ViewModel() {
     private val _screen = MutableLiveData<Screens>()
     val screen: LiveData<Screens> = _screen
 
-    fun setTitleScreen(screen: Screens) {
+    fun setScreen(screen: Screens) {
         _screen.value = screen
     }
 }

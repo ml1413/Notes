@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
+import androidx.core.view.WindowCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -37,8 +38,9 @@ import com.hutapp.org.notes.hut.android.db.NoteEntity
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
 import com.hutapp.org.notes.hut.android.notification.ModelAlarmItem
-import com.hutapp.org.notes.hut.android.ui.myUiComponent.MyFAB
+import com.hutapp.org.notes.hut.android.ui.myComponent.MyFAB
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
+import com.hutapp.org.notes.hut.android.utilsFun.setResize
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -84,9 +86,9 @@ fun AddInfoScreen(
         mutableStateOf(null)
     }
 
-    //resizeWindow__________________________________________________________________________________
     val activity: Activity = LocalContext.current as Activity
-    //______________________________________________________________________________________________
+
+
     Column(
         modifier = modifier
             .padding(paddingValues)
@@ -95,10 +97,6 @@ fun AddInfoScreen(
         TextField(
             modifier = modifier
                 .focusRequester(focusRequester = focusRequester)
-                .onFocusChanged {
-                    //resizeWindow__________________________________________________________________
-                    activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-                }
                 .fillMaxWidth(),
             isError = isError.value,
             singleLine = true,

@@ -2,6 +2,7 @@ package com.hutapp.org.notes.hut.android.di
 
 import android.content.Context
 import androidx.room.Room
+import com.hutapp.org.notes.hut.android.activity.FloatingActivityForGetShered.SharedIsNewEntityIsExistImpl
 import com.hutapp.org.notes.hut.android.db.NoteDataBase
 import dagger.Module
 import dagger.Provides
@@ -21,4 +22,8 @@ class RoomModule {
             name = "note_database"
         ).build()
     }
+
+    @Provides
+    fun getSharedPref(@ApplicationContext context: Context) =
+        context.getSharedPreferences(SharedIsNewEntityIsExistImpl.SHARED_NAME, Context.MODE_PRIVATE)
 }
