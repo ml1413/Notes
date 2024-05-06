@@ -3,9 +3,12 @@ package com.hutapp.org.notes.hut.android.activity
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -16,12 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -43,6 +48,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     private lateinit var analytics: FirebaseAnalytics
     private var idEntity: Int? = null
+
     @Inject
     lateinit var sharedIsNewEntityIsExistImpl: SharedIsNewEntityIsExistImpl
 
@@ -65,6 +71,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
             //______________________________________________________________________________________
+
 
             NotesHutAndroidTheme {
                 Surface(

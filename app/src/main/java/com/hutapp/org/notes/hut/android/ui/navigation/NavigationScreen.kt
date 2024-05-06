@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.DrawerItemStateViewModel

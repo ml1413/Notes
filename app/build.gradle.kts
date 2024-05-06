@@ -77,8 +77,12 @@ dependencies {
 
     // runtime-livedata
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+
     // firebase
-    implementation("com.google.firebase:firebase-analytics:21.5.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:21.1.1")
     // googleSplashScreen
     implementation("androidx.core:core-splashscreen:1.0.1")
     //lifecycle-viewmodel
@@ -92,7 +96,8 @@ dependencies {
     //Hilt
     implementation("com.google.dagger:hilt-android:2.47")
     kapt("com.google.dagger:hilt-compiler:2.47")
-
+    // coil-compose
+    implementation("io.coil-kt:coil-compose:2.2.2")
     //accompanist-permissions
     implementation("com.google.accompanist:accompanist-permissions:0.32.0")
 

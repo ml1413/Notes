@@ -12,7 +12,20 @@
           "package_name": "com.hutapp.org.notes.hut.android"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "971316400360-rfmv6o72384l12rshdqj7t2pmmkmrkkn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hutapp.org.notes.hut.android",
+            "certificate_hash": "5472fcbeb66f89bd9cb6d5c1a6cc12236060fd55"
+          }
+        },
+        {
+          "client_id": "971316400360-7glk9k4amrttfvs1c42iircqkn2lri50.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB5EyihRuqBM3n9vGUq26qLBDfERYMPEyE"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971316400360-7glk9k4amrttfvs1c42iircqkn2lri50.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -26,13 +26,12 @@ fun MyDrawerSheet(
     drawerState: DrawerState,
     onItemDrawMenuListener: (Screens) -> Unit
 ) {
-//    drawerItemStateViewModel.selectedItemDrawState.apply {
-//        if (value == null) {
-//            value = drawerItemStateViewModel.listMenu[0]
-//        }
-//    }
+
     ModalDrawerSheet {
         LazyColumn {
+
+            item { MyHeader() }
+
             items(drawerItemStateViewModel.listMenu) { screen ->
                 NavigationDrawerItem(
                     modifier = modifier.padding(horizontal = 12.dp),
@@ -54,3 +53,4 @@ fun MyDrawerSheet(
         }
     }
 }
+
