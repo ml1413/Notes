@@ -44,4 +44,5 @@
     //header
     <string name="signout">"  SignOut"</string>
     <string name="googlesignin">GoogleSignIn</string>
+    <string name="synchronization_and_backup">Synchronization and backup</string>
 </resources>

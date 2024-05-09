@@ -1,5 +1,6 @@
 package com.hutapp.org.notes.hut.android.ui.drawerSheet
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,10 +29,8 @@ fun MyDrawerSheet(
 ) {
 
     ModalDrawerSheet {
-        LazyColumn {
-
-            item { MyHeader() }
-
+        MyHeader()
+        LazyColumn ( contentPadding = PaddingValues(vertical = 16.dp)){
             items(drawerItemStateViewModel.listMenu) { screen ->
                 NavigationDrawerItem(
                     modifier = modifier.padding(horizontal = 12.dp),
