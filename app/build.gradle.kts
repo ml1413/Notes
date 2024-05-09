@@ -101,6 +101,21 @@ dependencies {
     //accompanist-permissions
     implementation("com.google.accompanist:accompanist-permissions:0.32.0")
 
+    // Guava
+    implementation ("com.google.guava:guava:24.1-jre")
+// Guava fix
+    implementation ("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
+
+//Drive
+    implementation("com.google.api-client:google-api-client-android:1.23.0") {
+        exclude (group= "org.apache.httpcomponents")
+        exclude (module= "guava-jdk5")
+    }
+    implementation("com.google.apis:google-api-services-drive:v3-rev136-1.25.0") {
+        exclude (group= "org.apache.httpcomponents")
+        exclude (module= "guava-jdk5")
+    }
+
 
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")

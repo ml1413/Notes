@@ -1,6 +1,7 @@
 package com.hutapp.org.notes.hut.android.ui.drawerSheet
 
 import android.content.Intent
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,15 +41,29 @@ import coil.compose.AsyncImage
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.http.FileContent
+import com.google.api.client.json.jackson2.JacksonFactory
+import com.google.api.services.drive.Drive
+import com.google.api.services.drive.DriveScopes
 import com.hutapp.org.notes.hut.android.R
 import com.hutapp.org.notes.hut.android.utilsAccount.MyFirebaseSignInOut
 import com.hutapp.org.notes.hut.android.utilsAccount.MyGoogleSignIn
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
 fun MyHeader(
     modifier: Modifier = Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
+
     val context = LocalContext.current
     val myGoogleSignIn = MyGoogleSignIn(context)
     val isSignIn = remember { mutableStateOf(myGoogleSignIn.account != null) }
@@ -100,6 +116,116 @@ fun MyHeader(
                 )
                 Text(text = stringResource(R.string.signout))
             }
+            /***/
+            Button(onClick = {
+
+                GoogleSignIn.getLastSignedInAccount(context)?.let { account ->
+                    Log.d("TAG1", "MyHeader: account $account")
+                    /**_________________________________________________________________________*/
+                    val credential =
+                        GoogleAccountCredential.usingOAuth2(
+                            context,
+                            listOf(
+                                DriveScopes.DRIVE,
+                                DriveScopes.DRIVE_FILE
+                            )
+                        )
+                    credential.selectedAccount = account.account
+                    Log.d("TAG1", "MyHeader: credential $credential")
+
+                    /**_________________________________________________________________________*/
+                    //get drive
+                    val drive = Drive.Builder(
+                        AndroidHttp.newCompatibleTransport(),
+                        JacksonFactory.getDefaultInstance(),
+                        credential
+                    )
+                        .setApplicationName(context.getString(R.string.app_name))
+                        .build()
+                    Log.d("TAG1", "MyHeader: drive $drive")
+
+                    /**_________________________________________________________________________*/
+                    coroutineScope.launch(Dispatchers.IO) {
+//                        // Define a Folder
+//                        val gFolder = com.google.api.services.drive.model.File()
+//                        // Set file name and MIME
+//                        gFolder.name = "My Cool Folder Name"
+//                        gFolder.mimeType = "application/vnd.google-apps.folder"
+//                        // get all folder
+//                        val folders = drive.files().list()
+//                            .setQ("mimeType='application/vnd.google-apps.folder'").execute()
+//                        // find folder
+//                        val parentFolderId = folders.files.firstOrNull {
+//                            it.name == "My Cool Folder Name"
+//                        }
+//                        // put in folder
+//                        parentFolderId?.let {
+//                            gFolder.parents = listOf(it.id)
+//                        }
+//
+//                        drive.Files().create(gFolder).setFields("id").execute()
+
+                        /**_________________________________________________________________________*/
+                        //createFile
+                        val gFile = com.google.api.services.drive.model.File()
+                        val myFileFromPhone = File("/storage/emulated/0/Download/2.pdf")
+
+                        val fileContent = FileContent("application/pdf", myFileFromPhone)
+                        gFile.name = myFileFromPhone.name
+                        // get all Folder
+                        val allFolders = drive.files().list()
+                            .setQ("mimeType='application/vnd.google-apps.folder'").execute()
+                        val idParentFolder = allFolders.files.firstOrNull {
+                            it.name == "My Cool Folder Name"
+                        }
+                        idParentFolder?.let {
+                            gFile.parents = listOf(it.id)
+//                            val isExist =
+//                                drive.files().list().execute().files.firstOrNull() { file ->
+//                                    file.name == myFileFromPhone.name
+//                                }
+//                            if (isExist != null) {
+////                                gFile.id = isExist.id
+//                                drive.Files().update("id", gFile, fileContent).execute()
+//
+//                            } else {
+//
+//                            }
+                            val isExist =
+                                drive.files().list().execute().files.firstOrNull() { file ->
+                                    file.name == myFileFromPhone.name
+                                }
+                            if (isExist == null) {
+                                Log.d("TAG1", "MyHeader:if isExist $isExist")
+                                drive.Files().create(gFile, fileContent).setFields("id").execute()
+                            } else {
+                                Log.d("TAG1", "MyHeader:else isExist $isExist")
+//                                //deleteFile
+//                                drive.Files().delete(isExist.id).execute()
+                                //_________________________________________________________
+                                //get url file
+
+                                val outFile = File("/storage/emulated/0/Download/3.pdf")
+                                val outputStream = FileOutputStream(outFile)
+                                val inputStream =
+                                    drive.files().get(isExist.id).executeMediaAsInputStream()
+                                inputStream.use { input ->
+                                    outputStream.use { out ->
+                                        input.copyTo(out)
+                                    }
+
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+
+            }) {
+                Text(text = "save")
+            }
+            /***/
 
         } else {
             Button(onClick = {
