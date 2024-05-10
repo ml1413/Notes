@@ -3,6 +3,7 @@ package com.hutapp.org.notes.hut.android.ui.navigation
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MovableContent
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,6 +19,7 @@ fun AppNavGraph(
     addScreenContent: @Composable () -> Unit,
     readScreenContent: @Composable (Int) -> Unit,
     calendarScreen:@Composable ()->Unit,
+    backupContent:@Composable ()->Unit,
 ) {
     NavHost(navController = navHostController,
         startDestination = Screens.AllNotesScreen.route,
@@ -27,6 +29,7 @@ fun AppNavGraph(
             composable(Screens.TrashScreen.route) { trashScreenContent() }
             composable(Screens.AddScreen.route) { addScreenContent() }
             composable(Screens.CalendarScreen.route){calendarScreen()}
+            composable(Screens.BackUpScreen.route){backupContent()}
             //______________________________________________________________________________________
             composable(
                 route = Screens.ReadNoteScreen.route,

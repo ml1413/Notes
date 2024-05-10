@@ -45,4 +45,7 @@
     <string name="signout">"  SignOut"</string>
     <string name="googlesignin">GoogleSignIn</string>
     <string name="synchronization_and_backup">Synchronization and backup</string>
+    <string name="backup">BackUp</string>
+    // backup screen
+    <string name="save_to_cloud">Save to cloud</string>
 </resources>

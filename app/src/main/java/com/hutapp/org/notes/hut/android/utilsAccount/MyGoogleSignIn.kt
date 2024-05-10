@@ -38,7 +38,7 @@ class MyGoogleSignIn(context: Context) {
             .build()
     }
 
-    fun googleSignIn(task: Task<GoogleSignInAccount>): AuthCredential? {
+    fun getCredential(task: Task<GoogleSignInAccount>): AuthCredential? {
         var credential: AuthCredential? = null
         try {
             val result = task.getResult(ApiException::class.java)

@@ -14,12 +14,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.DrawerItemStateViewModel
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.MyDrawerSheet
 import com.hutapp.org.notes.hut.android.ui.screens.AddInfoScreen.AddInfoScreen
+import com.hutapp.org.notes.hut.android.ui.screens.BackUpScreen
 import com.hutapp.org.notes.hut.android.ui.screens.NoteLazyScreen
 import com.hutapp.org.notes.hut.android.ui.screens.SettingsScreen
 import com.hutapp.org.notes.hut.android.ui.screens.calendar_screen.CalendarScreen
@@ -31,6 +31,7 @@ import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewMode
 import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.MyTopBar
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabItemList
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
+import com.hutapp.org.notes.hut.android.utilsAccount.AccountViewModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -50,6 +51,8 @@ fun NavigationScreen(
     val navHostController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val accountVewModel: AccountViewModel = viewModel()
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -58,6 +61,7 @@ fun NavigationScreen(
                 modifier = modifier,
                 drawerItemStateViewModel = drawerItemStateViewModel,
                 coroutineScope = coroutineScope,
+                accountVewModel = accountVewModel,
                 drawerState = drawerState,
                 onItemDrawMenuListener = { screen ->
                     currentScreenViewModel.setScreen(screen = screen)
@@ -89,7 +93,7 @@ fun NavigationScreen(
                             readNoteViewModel.noteEntity.value?.apply {
                                 val intent = Intent(Intent.ACTION_SEND)
                                 intent.setType("text/plain")
-                                intent.putExtra(Intent.EXTRA_TEXT,message)
+                                intent.putExtra(Intent.EXTRA_TEXT, message)
                                 context.startActivity(intent)
                             }
                         }
@@ -191,6 +195,15 @@ fun NavigationScreen(
                                 onBackListener = {
                                     currentScreenViewModel.setScreen(screen = Screens.AllNotesScreen)
                                     navHostController.popBackStack()
+                                }
+                            )
+                        },
+                        backupContent = {
+                            BackUpScreen(
+                                paddingValues = paddingValues,
+                                accountVewModel = accountVewModel,
+                                onSaveClickListener = {
+                                    //todo onSaveClickListener
                                 }
                             )
                         })

@@ -1,7 +1,9 @@
 package com.hutapp.org.notes.hut.android.ui.drawerSheet
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,80 +14,87 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.Task
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.GoogleAuthProvider
 import com.hutapp.org.notes.hut.android.R
-import com.hutapp.org.notes.hut.android.utilsAccount.MyFirebaseSignInOut
+import com.hutapp.org.notes.hut.android.utilsAccount.AccountViewModel
 import com.hutapp.org.notes.hut.android.utilsAccount.MyGoogleDriveHelper
-import com.hutapp.org.notes.hut.android.utilsAccount.MyGoogleSignIn
 
 @Composable
-@Preview(showSystemUi = true, showBackground = true)
 fun MyHeader(
     modifier: Modifier = Modifier,
+    context: Context = LocalContext.current,
+    accountVewModel: AccountViewModel
 ) {
-    val context = LocalContext.current
+
+    val accountViewModelState = accountVewModel.account.observeAsState()
     val coroutineScope = rememberCoroutineScope()
     val myDrive = remember { MyGoogleDriveHelper(context) }
-    Log.d("TAG1", "MyHeader: myDrive $myDrive")
 
-    val myGoogleSignIn = MyGoogleSignIn(context)
-    val isSignIn = remember { mutableStateOf(myGoogleSignIn.account != null) }
+
     val isShowProgress = remember { mutableStateOf(false) }
-    val launcher = launchGoogleSignIn() { task ->
-        val credential = myGoogleSignIn.googleSignIn(task)
-        credential?.let { authCredential ->
-            MyFirebaseSignInOut.fireBaseSignIn(
-                credential = authCredential,
-                onComplete = { isComplete ->
-                    isSignIn.value = isComplete
-                    isShowProgress.value = false
-                })
-        }
-    }
+
+    val launchSignIn =
+        launchGoogleSignin(onCredential = {
+            GoogleSignIn.getLastSignedInAccount(context)?.let { account ->
+                accountVewModel.setAccount(account)
+            }
+            isShowProgress.value = false
+            Toast.makeText(context, "$it", Toast.LENGTH_SHORT).show()
+        })
+
     Column(
         modifier = modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val image = myGoogleSignIn.account?.photoUrl
         Box(
-            modifier = modifier.padding(top = 16.dp)
+            modifier = modifier
+                .height(8.dp),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            if (isShowProgress.value) {
+                LinearProgressIndicator(modifier = modifier.fillMaxWidth())
+            }
+        }
+        val image = accountVewModel.account.value?.photoUrl
+        Box(
+            modifier = modifier.padding(16.dp)
         ) {
             Image(
-                modifier = modifier.size(124.dp),
+                modifier = modifier.size(124.dp).alpha(0.5f),
                 imageVector = Icons.Default.AccountCircle,
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                colorFilter = ColorFilter.tint(Color.LightGray),
                 contentDescription = null,
             )
             AsyncImage(
@@ -97,16 +106,15 @@ fun MyHeader(
                 imageLoader = ImageLoader(context),
             )
         }
-        if (isSignIn.value && myGoogleSignIn.account != null) {
-            Button(onClick = {
-                myGoogleSignIn.signOut {
-                    MyFirebaseSignInOut.signOut()
-                    isSignIn.value = false
-                }
+        if (accountViewModelState.value != null) {
+            Button(
+                modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                onClick = {
+                accountVewModel.signOut()
             }) {
                 Text(
                     fontWeight = FontWeight.Bold,
-                    text = myGoogleSignIn.account?.displayName.toString()
+                    text = accountVewModel.account.value?.displayName.toString()
                 )
                 Text(text = stringResource(R.string.signout))
             }
@@ -225,11 +233,12 @@ fun MyHeader(
             /***/
 
         } else {
-            Button(onClick = {
-                myGoogleSignIn.signInIntent()?.let { signInIntent ->
-                    launcher.launch(signInIntent)
+            Button(
+                modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                onClick = {
+                accountVewModel.getIntentForSignIn { intent ->
+                    launchSignIn.launch(intent)
                 }
-
                 isShowProgress.value = true
             }) {
                 Row(
@@ -247,12 +256,7 @@ fun MyHeader(
                 }
             }
         }
-        Box(modifier = modifier.padding(top = 16.dp)) {
-            Divider(modifier = modifier.fillMaxWidth(), thickness = 1.dp)
-            if (isShowProgress.value) {
-                LinearProgressIndicator(modifier = modifier.fillMaxWidth())
-            }
-        }
+
 //        if (isSignIn.value && myGoogleSignIn.account != null)
 //        Box(
 //            modifier = modifier
@@ -272,51 +276,35 @@ fun MyHeader(
 //                Text(text = stringResource(R.string.synchronization_and_backup))
 //            }
 //        }
-        OutlinedIconButton(
-            modifier = modifier.fillMaxWidth(),
-            shape = RectangleShape,
-            border = null,
-            enabled = isSignIn.value && myGoogleSignIn.account != null,
-            onClick = { /*TODO*/ }) {
-            val isEnabledColor = if (isSignIn.value && myGoogleSignIn.account != null) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                Color.LightGray
-            }
-            Row {
-                Image(
-                    painterResource(id = R.drawable.baseline_cloud_24),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(isEnabledColor),
-                    modifier = modifier.padding(horizontal = 16.dp)
-                )
-                Text(
-                    color = isEnabledColor,
-                    text = stringResource(R.string.synchronization_and_backup)
-                )
-            }
-        }
-        Divider(modifier = modifier.fillMaxWidth(), thickness = 1.dp)
     }
 }
 
 @Composable
-private fun launchGoogleSignIn(
-    onTask: (Task<GoogleSignInAccount>) -> Unit
-): ManagedActivityResultLauncher<Intent, ActivityResult> {
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = { activityResult ->
-            if (activityResult.resultCode == ComponentActivity.RESULT_OK) {
-                val intent = activityResult.data
-                intent?.let {
-                    val task = GoogleSignIn.getSignedInAccountFromIntent(it)
-                    onTask(task)
-                }
-            }
+fun launchGoogleSignin(onCredential: (AuthCredential?) -> Unit)
+        : ManagedActivityResultLauncher<Intent, ActivityResult> {
+    val launcher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+            onResult = { activityResult ->
+                if (activityResult.resultCode == ComponentActivity.RESULT_OK) {
+                    val intentData = activityResult.data
+                    intentData?.let {
+                        val task = GoogleSignIn.getSignedInAccountFromIntent(it)
 
-        }
-    )
+                        val credential = try {
+                            val result = task.getResult(ApiException::class.java)
+                            GoogleAuthProvider.getCredential(result.idToken, null)
+                        } catch (e: Exception) {
+                            Log.e("TAG1", "googleSignIn: ", e)
+                            null
+                        }
+                        onCredential(credential)
+                    }
+                }
+
+
+            }
+        )
     return launcher
 }
 

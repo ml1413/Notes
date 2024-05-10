@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.hutapp.org.notes.hut.android.activity.FloatingActivityForGetShered.SharedIsNewEntityIsExistImpl
 import com.hutapp.org.notes.hut.android.db.NoteDataBase
+import com.hutapp.org.notes.hut.android.utilsAccount.MyGoogleSignIn
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +23,12 @@ class RoomModule {
             name = "note_database"
         ).build()
     }
+
+    @Provides
+    fun getMyGoogleSignIn(@ApplicationContext context: Context): MyGoogleSignIn {
+      return  MyGoogleSignIn(context = context)
+    }
+
 
     @Provides
     fun getSharedPref(@ApplicationContext context: Context) =

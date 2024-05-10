@@ -1,5 +1,6 @@
 package com.hutapp.org.notes.hut.android.activity
 
+import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -51,7 +52,6 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var sharedIsNewEntityIsExistImpl: SharedIsNewEntityIsExistImpl
-
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @OptIn(ExperimentalPermissionsApi::class)
