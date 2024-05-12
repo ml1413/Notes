@@ -14,7 +14,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.hutapp.org.notes.hut.android.db.NoteViewModel
 import com.hutapp.org.notes.hut.android.notification.AlarmSchedulerImpl
 import com.hutapp.org.notes.hut.android.ui.drawerSheet.DrawerItemStateViewModel
@@ -33,6 +32,7 @@ import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.MyTopBar
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabItemList
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 import com.hutapp.org.notes.hut.android.utilsAccount.AccountViewModel
+import com.hutapp.org.notes.hut.android.utilsAccount.MyGoogleDriveHelper
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -42,6 +42,7 @@ fun NavigationScreen(
     context: Context,
     launchPermissionNotification: PermissionState,
     noteViewModel: NoteViewModel,
+    myGoogleDriveHelper: MyGoogleDriveHelper,
     tabItemList: TabItemList,
     alarmSchedulerImpl: AlarmSchedulerImpl,
     tabRowCurrentItemViewModel: TabRowCurrentItemViewModel,
@@ -203,8 +204,10 @@ fun NavigationScreen(
                             BackUpScreen(
                                 paddingValues = paddingValues,
                                 accountVewModel = accountVewModel,
+                                myGoogleDriveHelper = myGoogleDriveHelper,
+                                noteViewModel = noteViewModel,
                                 onSaveClickListener = {
-                                    //todo onSaveClickListener
+
                                 }
                             )
                         })

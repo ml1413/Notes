@@ -1,15 +1,10 @@
 package com.hutapp.org.notes.hut.android.activity
 
-import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -17,7 +12,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -25,9 +19,6 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -42,6 +33,7 @@ import com.hutapp.org.notes.hut.android.ui.tabRow.MyTopBar.CurrentScreenViewMode
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabItemList
 import com.hutapp.org.notes.hut.android.ui.tabRow.TabRowCurrentItemViewModel
 import com.hutapp.org.notes.hut.android.ui.theme.NotesHutAndroidTheme
+import com.hutapp.org.notes.hut.android.utilsAccount.MyGoogleDriveHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -122,6 +114,7 @@ fun MainScreen(
     val noteViewModel: NoteViewModel = viewModel()
     val tabItemList: TabItemList = TabItemList(context = context)
     val alarmSchedulerImpl = AlarmSchedulerImpl(context = context)
+    val myGoogleDriveHelper = MyGoogleDriveHelper(context)
 
     MyLifecycle(
         // check if new entity from share is exist update viewModel
@@ -137,6 +130,7 @@ fun MainScreen(
         context = context,
         launchPermissionNotification = launchPermissionNotification,
         noteViewModel = noteViewModel,
+        myGoogleDriveHelper = myGoogleDriveHelper,
         tabItemList = tabItemList,
         alarmSchedulerImpl = alarmSchedulerImpl,
         tabRowCurrentItemViewModel = tabRowCurrentItemViewModel,

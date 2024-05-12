@@ -103,10 +103,9 @@ dependencies {
 
     // Guava
     implementation ("com.google.guava:guava:24.1-jre")
-// Guava fix
+    // Guava fix
     implementation ("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
-
-//Drive
+    //Drive
     implementation("com.google.api-client:google-api-client-android:1.23.0") {
         exclude (group= "org.apache.httpcomponents")
         exclude (module= "guava-jdk5")
@@ -115,6 +114,9 @@ dependencies {
         exclude (group= "org.apache.httpcomponents")
         exclude (module= "guava-jdk5")
     }
+    //gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
 
 
     implementation("androidx.compose.ui:ui")
