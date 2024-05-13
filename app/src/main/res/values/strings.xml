@@ -48,4 +48,5 @@
     <string name="backup">BackUp</string>
     // backup screen
     <string name="save_to_cloud">Save to cloud</string>
+    <string name="download_from_cloud">Download from cloud</string>
 </resources>

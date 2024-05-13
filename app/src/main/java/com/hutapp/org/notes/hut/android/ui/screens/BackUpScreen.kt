@@ -1,6 +1,5 @@
 package com.hutapp.org.notes.hut.android.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,25 +43,25 @@ fun BackUpScreen(
             painter = painterResource(id = R.drawable.baseline_cloud_upload_24),
             title = stringResource(R.string.save_to_cloud),
             onSaveClickListener = {
-
-                // todo try save json in google drive
                 coroutineScope.launch(Dispatchers.IO) {
                     val list = noteViewModel.noteList.value
                     list?.let { listEntity ->
-                        myGoogleDriveHelper.deleteFile (deleteIsDone = {
-                            Log.d("TAG1", "BackUpScreen: deleteIsDone")
-                            myGoogleDriveHelper.addFolderInDrive(
-                                createFolderDone = {
-                                    Log.d("TAG1", "BackUpScreen: createFolderDone")
-                                    myGoogleDriveHelper.saveListInGoogleDrive(
-                                        fileName = "listJson.json",
-                                        list = listEntity,
-                                        type = "application/json"
-                                    )
-                                    Log.d("TAG1", "BackUpScreen: create File")
-                                })
-                        })
+                        myGoogleDriveHelper.saveList(list = listEntity)
                     }
+                }
+            }
+        )
+        MyDivider()
+        MyOutLineButton(
+            painter = painterResource(id = R.drawable.baseline_cloud_download_24),
+            title = stringResource(R.string.download_from_cloud),
+            onSaveClickListener = {
+                coroutineScope.launch(Dispatchers.IO) {
+                    myGoogleDriveHelper.downloadFileFromDrive(
+                        listEntity = { listEntity ->
+                            // todo work hir
+                        }
+                    )
                 }
             }
         )

@@ -1,6 +1,7 @@
 package com.hutapp.org.notes.hut.android.ui.myComponent
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,12 +33,15 @@ fun MyOutLineButton(
         border = null,
         onClick = { onSaveClickListener() }) {
 
-        Row {
+        Row (
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start
+        ){
             Image(
                 painter = painter,
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(color ?: MaterialTheme.colorScheme.primary),
-                modifier = modifier.padding(start = 16.dp)
+                modifier = modifier.padding(start = 24.dp)
             )
             Text(
                 modifier = modifier.padding(horizontal = 16.dp),
