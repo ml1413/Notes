@@ -3,17 +3,22 @@ package com.hutapp.org.notes.hut.android.db
 import javax.inject.Inject
 
 class NoteRepositoryBD @Inject constructor(private val noteDataBase: NoteDataBase) {
+    private val noteDao = noteDataBase.getDao()
 
-    fun getAll() = noteDataBase.getDao().getAllNotes()
+    fun getAll() = noteDao.getAllNotes()
     suspend fun updateEntity(noteEntity: NoteEntity) {
-        noteDataBase.getDao().updateNote(noteEntity = noteEntity)
+        noteDao.updateNote(noteEntity = noteEntity)
     }
 
     suspend fun deleteNote(noteEntity: NoteEntity) {
-        noteDataBase.getDao().deleteNote(noteEntity)
+        noteDao.deleteNote(noteEntity)
     }
 
     suspend fun add(noteEntity: NoteEntity) {
-        noteDataBase.getDao().addNote(noteEntity = noteEntity)
+        noteDao.addNote(noteEntity = noteEntity)
+    }
+
+    suspend fun insertList(list: List<NoteEntity>) {
+        noteDao.insertList(list = list)
     }
 }

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hutapp.org.notes.hut.android.utilsAccount.MyGoogleDriveHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,6 +43,12 @@ class NoteViewModel @Inject constructor(
     fun addNoteEntityInDB(noteEntity: NoteEntity) {
         viewModelScope.launch {
             repositoryBD.add(noteEntity = noteEntity)
+        }
+    }
+
+    fun insertList(list: List<NoteEntity>) {
+        viewModelScope.launch {
+            repositoryBD.insertList(list = list)
         }
     }
 

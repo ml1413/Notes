@@ -75,7 +75,6 @@ class MyGoogleDriveHelper(private val context: Context) {
         // get all folder
         val folders = drive.files().list()
             .setQ("mimeType='application/vnd.google-apps.folder'").execute()
-        Log.d("TAG1", "getFileIdFromDrive: folders $folders ")
         // find folder
         return folders.files.firstOrNull {
             it.name == fileName
@@ -106,6 +105,7 @@ class MyGoogleDriveHelper(private val context: Context) {
             fileId?.let { fileFromDrive ->
                 drive.Files().delete(fileFromDrive.id).execute()
             }
+            Log.d("TAG1", "deleteFile: ")
         }
 
     }
@@ -129,6 +129,7 @@ class MyGoogleDriveHelper(private val context: Context) {
                 //type  "application/pdf"
                 val fileContent = FileContent(TYPE_JSON, tempFile)
                 drive.Files().create(gFile, fileContent).setFields("id").execute()
+                Log.d("TAG1", "addListAsJsonInGoogleDrive: ")
             }
         }
     }
@@ -148,6 +149,7 @@ class MyGoogleDriveHelper(private val context: Context) {
                 //Set type  MIME
                 gFolder.mimeType = TYPE_FOLDER
                 drive.Files().create(gFolder).setFields("id").execute()
+                Log.d("TAG1", "addFolderInDrive: ")
             }
         }
     }
