@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    namespace = "com.hutapp.org.notes.hut.android"
+    namespace = "com.hutapp.org.notes.my_organization.android"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.hutapp.org.notes.hut.android"
+        applicationId = "com.hutapp.org.notes.my_organization.android"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

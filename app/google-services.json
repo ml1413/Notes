@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "971316400360",
-    "project_id": "notes-hut",
-    "storage_bucket": "notes-hut.appspot.com"
+    "project_number": "912310690760",
+    "project_id": "notes4-bf095",
+    "storage_bucket": "notes4-bf095.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:971316400360:android:6109ad2870991c82b4795d",
+        "mobilesdk_app_id": "1:912310690760:android:e3e97b1a4cec665ce156fd",
         "android_client_info": {
-          "package_name": "com.hutapp.org.notes.hut.android"
+          "package_name": "com.hutapp.org.notes.my_organization.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "971316400360-rfmv6o72384l12rshdqj7t2pmmkmrkkn.apps.googleusercontent.com",
+          "client_id": "912310690760-jvevj2u8srvgi7mo3jt2aameo6ss1khh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.hutapp.org.notes.hut.android",
+            "package_name": "com.hutapp.org.notes.my_organization.android",
             "certificate_hash": "5472fcbeb66f89bd9cb6d5c1a6cc12236060fd55"
           }
         },
         {
-          "client_id": "971316400360-7glk9k4amrttfvs1c42iircqkn2lri50.apps.googleusercontent.com",
+          "client_id": "912310690760-3tisn8rrrp41rdai9obetf1r2qr74amv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB5EyihRuqBM3n9vGUq26qLBDfERYMPEyE"
+          "current_key": "AIzaSyCCnvtuzYeVVeaq996A_7_Mxz6Sq4Y1tj0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "971316400360-7glk9k4amrttfvs1c42iircqkn2lri50.apps.googleusercontent.com",
+              "client_id": "912310690760-3tisn8rrrp41rdai9obetf1r2qr74amv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
