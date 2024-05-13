@@ -56,6 +56,7 @@ fun NavigationScreen(
     val accountVewModel: AccountViewModel = viewModel()
 
 
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -64,6 +65,7 @@ fun NavigationScreen(
                 drawerItemStateViewModel = drawerItemStateViewModel,
                 coroutineScope = coroutineScope,
                 accountVewModel = accountVewModel,
+                myGoogleDriveHelper = myGoogleDriveHelper,
                 drawerState = drawerState,
                 onItemDrawMenuListener = { screen ->
                     currentScreenViewModel.setScreen(screen = screen)

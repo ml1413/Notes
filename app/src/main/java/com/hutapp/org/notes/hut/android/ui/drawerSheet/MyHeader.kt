@@ -54,14 +54,11 @@ import com.hutapp.org.notes.hut.android.utilsAccount.MyGoogleDriveHelper
 fun MyHeader(
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
-    accountVewModel: AccountViewModel
+    accountVewModel: AccountViewModel,
+    myGoogleDriveHelper:MyGoogleDriveHelper
 ) {
 
     val accountViewModelState = accountVewModel.account.observeAsState()
-    val coroutineScope = rememberCoroutineScope()
-    val myDrive = remember { MyGoogleDriveHelper(context) }
-
-
     val isShowProgress = remember { mutableStateOf(false) }
 
     val launchSignIn =
@@ -70,7 +67,7 @@ fun MyHeader(
                 accountVewModel.setAccount(account)
             }
             isShowProgress.value = false
-            Toast.makeText(context, "$it", Toast.LENGTH_SHORT).show()
+            myGoogleDriveHelper.initializationDrive()
         })
 
     Column(

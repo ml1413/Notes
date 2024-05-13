@@ -1,6 +1,5 @@
 package com.hutapp.org.notes.hut.android.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,7 +35,10 @@ fun BackUpScreen(
             .padding(paddingValues)
             .fillMaxSize()
     ) {
-        MyHeader(accountVewModel = accountVewModel)
+        MyHeader(
+            accountVewModel = accountVewModel,
+            myGoogleDriveHelper = myGoogleDriveHelper
+        )
 
         MyDivider()
         //save button
@@ -60,7 +62,7 @@ fun BackUpScreen(
                 coroutineScope.launch(Dispatchers.IO) {
                     myGoogleDriveHelper.downloadFileFromDrive(
                         listEntity = { listEntity ->
-                           noteViewModel.insertList(list=listEntity)
+                            noteViewModel.insertList(list = listEntity)
 
                         }
                     )

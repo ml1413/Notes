@@ -29,7 +29,12 @@ class MyGoogleDriveHelper(private val context: Context) {
     private val json: Gson by lazy { Gson() }
 
     init {
+        initializationDrive()
+    }
+
+    fun initializationDrive() {
         drive = GoogleSignIn.getLastSignedInAccount(context)?.let { account ->
+            Log.d("TAG1", "initializationDrive: ")
             // credential
             val credential =
                 GoogleAccountCredential.usingOAuth2(
@@ -50,10 +55,10 @@ class MyGoogleDriveHelper(private val context: Context) {
                 .setApplicationName(context.getString(R.string.app_name))
                 .build()
         }
-
     }
 
     fun saveList(list: List<NoteEntity>, isDone: () -> Unit = {}) {
+        Log.d("TAG1", "saveList: drive $drive")
         // delete folder if exist
         deleteFile(fileName = FOLDER_ID)
         // add new empty folder

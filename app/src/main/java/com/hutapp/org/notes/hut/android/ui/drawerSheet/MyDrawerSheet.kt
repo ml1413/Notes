@@ -24,6 +24,7 @@ import com.hutapp.org.notes.hut.android.ui.myComponent.MyDivider
 import com.hutapp.org.notes.hut.android.ui.myComponent.MyOutLineButton
 import com.hutapp.org.notes.hut.android.ui.navigation.Screens
 import com.hutapp.org.notes.hut.android.utilsAccount.AccountViewModel
+import com.hutapp.org.notes.hut.android.utilsAccount.MyGoogleDriveHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -32,13 +33,17 @@ fun MyDrawerSheet(
     modifier: Modifier,
     drawerItemStateViewModel: DrawerItemStateViewModel,
     coroutineScope: CoroutineScope,
+    myGoogleDriveHelper :MyGoogleDriveHelper,
     accountVewModel: AccountViewModel,
     drawerState: DrawerState,
     onItemDrawMenuListener: (Screens) -> Unit,
 ) {
 
     ModalDrawerSheet {
-        MyHeader(accountVewModel = accountVewModel)
+        MyHeader(
+            accountVewModel = accountVewModel,
+            myGoogleDriveHelper = myGoogleDriveHelper
+        )
 
         MyDivider()
 
