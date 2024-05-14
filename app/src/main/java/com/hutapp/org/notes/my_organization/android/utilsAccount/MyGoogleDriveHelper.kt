@@ -1,10 +1,12 @@
 package com.hutapp.org.notes.my_organization.android.utilsAccount
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
 import com.google.api.client.http.FileContent
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.drive.Drive
@@ -57,18 +59,28 @@ class MyGoogleDriveHelper(private val context: Context) {
         }
     }
 
-    fun saveList(list: List<NoteEntity>, isDone: () -> Unit = {}) {
+    fun saveList(list: List<NoteEntity>, isDone: () -> Unit = {}, intent: (Intent) -> Unit = {}) {
         Log.d("TAG1", "saveList: drive $drive")
-        // delete folder if exist
-        deleteFile(fileName = FOLDER_ID)
-        // add new empty folder
-        addFolderInDrive()
-        // add file in folder
-        addListAsJsonInGoogleDrive(list = list)
+        try {// delete folder if exist
+            deleteFile(fileName = FOLDER_ID)
+            // add new empty folder
+            addFolderInDrive()
+            // add file in folder
+            addListAsJsonInGoogleDrive(list = list)
+        } catch (e: UserRecoverableAuthIOException) {
+            intent(e.intent)
+        }
     }
 
-    fun downloadFileFromDrive(listEntity: (List<NoteEntity>) -> Unit) {
-        downloadFile(listEntity = listEntity)
+    fun downloadFileFromDrive(
+        listEntity: (List<NoteEntity>) -> Unit,
+        intent: (Intent) -> Unit = {}
+    ) {
+        try {
+            downloadFile(listEntity = listEntity)
+        } catch (e: UserRecoverableAuthIOException) {
+            intent(e.intent)
+        }
     }
 
 

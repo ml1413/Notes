@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 fun MyOutLineButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onSaveClickListener: () -> Unit,
+    onClickListener: () -> Unit,
     color: Color? = null,
     painter: Painter,
     title: String
@@ -31,7 +31,7 @@ fun MyOutLineButton(
         shape = RectangleShape,
         enabled = enabled,
         border = null,
-        onClick = { onSaveClickListener() }) {
+        onClick = { onClickListener() }) {
 
         Row (
             modifier = modifier.fillMaxWidth(),

@@ -93,7 +93,7 @@ private fun MyOutLineButtonDrawer(
         Color.LightGray
     }
     MyOutLineButton(
-        onSaveClickListener = { onButtonClickListener() },
+        onClickListener = { onButtonClickListener() },
         enabled = accountViewModelState.value != null,
         color = isEnabledColor,
         painter = painterResource(id = R.drawable.baseline_cloud_24),

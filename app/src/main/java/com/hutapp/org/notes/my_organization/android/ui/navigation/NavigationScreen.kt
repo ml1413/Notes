@@ -207,6 +207,7 @@ fun NavigationScreen(
                                 paddingValues = paddingValues,
                                 accountVewModel = accountVewModel,
                                 myGoogleDriveHelper = myGoogleDriveHelper,
+                                alarmSchedulerImpl = alarmSchedulerImpl,
                                 noteViewModel = noteViewModel,
                                 onSaveClickListener = {
 

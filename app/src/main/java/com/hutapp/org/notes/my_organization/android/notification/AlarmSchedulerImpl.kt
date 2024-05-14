@@ -23,11 +23,11 @@ class AlarmSchedulerImpl(private val context: Context) : AlarmScheduler {
 
     override fun cancel(itemId: Int) {
         val intent = Intent(context, AlarmReceiver::class.java)
-        Log.d("TAG1", "cancel: $itemId ")
         val pendingIntent = getPendingIntent(intent = intent, itemId = itemId)
 
         alarmManager.cancel(pendingIntent)
     }
+
 
     /** other________________________________________________________________________________________*/
     private fun putExtra(item: ModelAlarmItem, intent: Intent): Intent {
