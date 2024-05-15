@@ -1,17 +1,17 @@
 <resources>
-    <string name="app_name">Notes Hut Android</string>
+    <string name="app_name">Notes Android</string>
     //Error
-    <string name="no_text">Текст Отсутствует</string>
+    <string name="no_text">No text</string>
     //TextTab
-    <string name="note">Примечание</string>
-    <string name="reminding">Напоминания</string>
-    <string name="bookmarks">Закладки</string>
-    <string name="all_note">Все заметки</string>
-    <string name="settirng">Настройки</string>
-    <string name="trash">Корзина</string>
+    <string name="note">Notes</string>
+    <string name="reminding">Reminders</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="all_note">All notes</string>
+    <string name="settirng">Setting</string>
+    <string name="trash">Trash</string>
     //add info screen
-    <string name="label">Название</string>
-    <string name="text">Текст</string>
+    <string name="label">Label</string>
+    <string name="text">Text</string>
     // read screen
     <string name="no_label">No Label</string>
     <string name="no_message">No message</string>
